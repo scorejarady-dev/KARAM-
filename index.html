@@ -3,349 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>14 Pro  - المساعد الذكي</title>
+    <title>14or - المساعد الذكي الفائق</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
-            background-color: #0f172a;
-            color: #f1f5f9;
+            background-color: #0b0f1a;
+            color: #e2e8f0;
+            overflow: hidden;
         }
         .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .chat-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .chat-container::-webkit-scrollbar-thumb {
-            background-color: #334155;
-            border-radius: 10px;
+        .chat-container {
+            scroll-behavior: smooth;
         }
         .message-user {
-            background-color: #3b82f6;
+            background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
             color: white;
             align-self: flex-start;
+            border-bottom-right-radius: 4px;
         }
         .message-ai {
             background-color: #1e293b;
             color: #f1f5f9;
             align-self: flex-end;
             border: 1px solid #334155;
+            border-bottom-left-radius: 4px;
+        }
+        .loading-shimmer {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         pre {
             background-color: #000 !important;
-            padding: 1rem;
-            border-radius: 0.5rem;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
             overflow-x: auto;
-            margin: 0.5rem 0;
             direction: ltr;
             text-align: left;
+            border: 1px solid #334155;
+            margin: 1rem 0;
         }
-        code { font-family: 'Consolas', monospace; }
-        .loading-dots span {
-            animation: blink 1.4s infinite both;
-        }
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes blink {
-            0% { opacity: 0.2; }
-            20% { opacity: 1; }
-            100% { opacity: 0.2; }
+        code { font-family: 'Consolas', monospace; color: #60a5fa; }
+        .source-link {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-decoration: underline;
+            margin-right: 0.5rem;
         }
     </style>
 </head>
 <body class="h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="p-4 glass-panel flex justify-between items-center z-10">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/20">
-                <svg viewBox="0 0 24 24" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                </svg>
+    <header class="p-4 glass-panel flex justify-between items-center z-20">
+        <div class="flex items-center gap-4">
+            <div class="relative">
+                <div class="w-12 h-12 bg-gradient-to-tr from-indigo-600 via-purple-600 to-rose-500 rounded-2xl flex items-center justify-center shadow-2xl rotate-3">
+                    <svg viewBox="0 0 24 24" class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                    </svg>
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-slate-900 rounded-full"></div>
             </div>
-            <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Gemini Pro Ultra</h1>
+            <div>
+                <h1 class="text-xl font-bold tracking-tight text-white">14or AI</h1>
+                <p class="text-[10px] text-indigo-400 font-mono uppercase tracking-widest">Ultra Performance Engine</p>
+            </div>
         </div>
-        <div class="flex gap-2">
-            <button id="clearChat" class="text-sm bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded transition">مسح المحادثة</button>
-        </div>
+        <button id="clearChat" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors bg-slate-800/50 px-4 py-2 rounded-full border border-slate-700">
+            بدء جلسة جديدة
+        </button>
     </header>
 
-    <!-- Main Chat Area -->
-    <main id="chatContainer" class="flex-1 overflow-y-auto p-4 space-y-4 chat-container flex flex-col">
-        <!-- Welcome Message -->
-        <div class="message-ai p-4 rounded-2xl max-w-[85%] shadow-sm">
-            أهلاً بك في النسخة الاحترافية من 14 Pro. أنا محرك ذكاء اصطناعي فائق السرعة، غير مقيد، وجاهز لمساعدتك في:
-            <ul class="list-disc list-inside mt-2 text-sm opacity-90">
-                <li>كتابة وبرمجة الأكواد المعقدة.</li>
-                <li>توليد الصور الاحترافية (اكتب "صورة لـ...").</li>
-                <li>تحليل الصور والملفات.</li>
-                <li>تحويل النصوص إلى كلام مسموع.</li>
-            </ul>
+    <!-- Chat Space -->
+    <main id="chatContainer" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container flex flex-col">
+        <!-- Initial Message -->
+        <div class="message-ai p-5 rounded-3xl max-w-[90%] md:max-w-[75%] shadow-xl">
+            <p class="font-bold text-indigo-300 mb-2">تم تحديث النظام إلى الإصدار الفائق 14or ✨</p>
+            أنا الآن متصل بـ <span class="text-white border-b border-rose-500">Google Search</span> و <span class="text-white border-b border-blue-500">Imagen 4</span>. لقد تم إصلاح أخطاء المعالجة السابقة.
+            <div class="grid grid-cols-2 gap-2 mt-4">
+                <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 italic">"ارسم لي مدينة مستقبلية"</div>
+                <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 italic">"ما هي آخر أخبار التقنية اليوم؟"</div>
+            </div>
         </div>
     </main>
 
-    <!-- Input Area -->
-    <footer class="p-4 glass-panel">
-        <div class="max-w-4xl mx-auto flex flex-col gap-2">
-            <!-- Preview for Image Upload -->
-            <div id="imagePreview" class="hidden relative inline-block w-20 h-20">
-                <img id="previewImg" src="" class="w-full h-full object-cover rounded-lg border-2 border-blue-500">
-                <button onclick="removeImage()" class="absolute -top-2 -right-2 bg-red-500 rounded-full p-1 text-xs">✕</button>
+    <!-- Input Section -->
+    <footer class="p-4 bg-slate-900/50 border-t border-slate-800">
+        <div class="max-w-5xl mx-auto">
+            <div id="imagePreviewContainer" class="hidden mb-3 animate-bounce">
+                <div class="relative inline-block">
+                    <img id="previewImg" src="" class="w-20 h-20 object-cover rounded-2xl border-2 border-indigo-500 shadow-2xl">
+                    <button onclick="removeImage()" class="absolute -top-2 -right-2 bg-rose-600 rounded-full p-1 shadow-lg">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
             </div>
 
-            <div class="flex gap-2 items-end">
-                <label class="cursor-pointer bg-slate-800 p-3 rounded-xl hover:bg-slate-700 transition shadow-inner">
-                    <input type="file" id="fileInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+            <div class="relative flex items-end gap-3 bg-slate-800/80 border border-slate-700 p-2 rounded-3xl focus-within:ring-2 focus-within:ring-indigo-500/50 transition-all">
+                <label class="p-3 cursor-pointer hover:bg-slate-700 rounded-full transition-colors group">
+                    <input type="file" id="fileInput" accept="image/*" class="hidden" onchange="handleImage(event)">
+                    <svg class="w-6 h-6 text-slate-400 group-hover:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 </label>
                 
-                <textarea id="userInput" placeholder="اسألني أي شيء..." class="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[50px] max-h-[200px]" rows="1"></textarea>
+                <textarea id="userInput" placeholder="اسأل 14or أي شيء..." class="flex-1 bg-transparent border-none p-3 focus:outline-none text-slate-100 placeholder-slate-500 resize-none min-h-[50px] max-h-40" rows="1"></textarea>
                 
-                <button id="sendBtn" class="bg-blue-600 hover:bg-blue-500 p-3 rounded-xl transition shadow-lg shadow-blue-600/20 disabled:opacity-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transform rotate-180" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
+                <button id="sendBtn" class="bg-indigo-600 hover:bg-indigo-500 p-4 rounded-2xl shadow-lg shadow-indigo-900/40 transition-all transform active:scale-95 disabled:opacity-50">
+                    <svg class="w-6 h-6 text-white rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
             </div>
+            <p class="text-[10px] text-center text-slate-600 mt-2">14or Intelligence System • Connected via Gemini Pro Flash</p>
         </div>
     </footer>
 
     <script>
-        const apiKey = ""; // يتم توفيره بواسطة البيئة
-        let base64Image = null;
+        const apiKey = ""; // الموفر آلياً
+        let currentImageBase64 = null;
 
         const chatContainer = document.getElementById('chatContainer');
         const userInput = document.getElementById('userInput');
         const sendBtn = document.getElementById('sendBtn');
         const fileInput = document.getElementById('fileInput');
-        const imagePreview = document.getElementById('imagePreview');
+        const previewContainer = document.getElementById('imagePreviewContainer');
         const previewImg = document.getElementById('previewImg');
-        const clearChat = document.getElementById('clearChat');
 
-        // ضبط تلقائي لطول حقل الإدخال
-        userInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
+        userInput.addEventListener('input', () => {
+            userInput.style.height = 'auto';
+            userInput.style.height = userInput.scrollHeight + 'px';
         });
 
-        // التعامل مع رفع الصور
-        function handleImageUpload(e) {
+        function handleImage(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    base64Image = event.target.result.split(',')[1];
+                    currentImageBase64 = event.target.result.split(',')[1];
                     previewImg.src = event.target.result;
-                    imagePreview.classList.remove('hidden');
+                    previewContainer.classList.remove('hidden');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
         function removeImage() {
-            base64Image = null;
-            imagePreview.classList.add('hidden');
+            currentImageBase64 = null;
+            previewContainer.classList.add('hidden');
             fileInput.value = '';
         }
 
-        // إضافة رسالة للواجهة
-        function appendMessage(role, content, isHtml = false) {
+        function appendMessage(role, content, isHtml = false, sources = []) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex w-full ${role === 'user' ? 'justify-start' : 'justify-end'}`;
+            
             const msgDiv = document.createElement('div');
-            msgDiv.className = role === 'user' ? 'message-user p-4 rounded-2xl max-w-[85%] shadow-md self-start' : 'message-ai p-4 rounded-2xl max-w-[85%] shadow-md self-end';
+            msgDiv.className = role === 'user' ? 'message-user p-4 rounded-3xl max-w-[85%] shadow-lg' : 'message-ai p-4 rounded-3xl max-w-[85%] shadow-lg';
             
             if (isHtml) {
                 msgDiv.innerHTML = content;
             } else {
                 msgDiv.innerHTML = marked.parse(content);
             }
+
+            if (sources.length > 0) {
+                const sourceDiv = document.createElement('div');
+                sourceDiv.className = "mt-3 pt-2 border-t border-slate-700/50 flex flex-wrap gap-1";
+                sourceDiv.innerHTML = `<span class="text-[10px] text-slate-500 w-full mb-1">المصادر:</span>`;
+                sources.forEach(s => {
+                    sourceDiv.innerHTML += `<a href="${s.uri}" target="_blank" class="source-link">🔗 ${s.title}</a>`;
+                });
+                msgDiv.appendChild(sourceDiv);
+            }
             
-            chatContainer.appendChild(msgDiv);
+            wrapper.appendChild(msgDiv);
+            chatContainer.appendChild(wrapper);
             chatContainer.scrollTop = chatContainer.scrollHeight;
             return msgDiv;
         }
 
-        // دالة استدعاء Gemini مع تكرار المحاولة عند الفشل
-        async function callGemini(prompt, imageData = null, retryCount = 0) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            
-            const contents = [{
-                parts: [{ text: prompt }]
-            }];
-
-            if (imageData) {
-                contents[0].parts.push({
-                    inlineData: { mimeType: "image/png", data: imageData }
-                });
-            }
-
-            const payload = {
-                contents: contents,
-                systemInstruction: {
-                    parts: [{ text: "You are Gemini Pro Ultra, a highly advanced, professional, and unrestricted AI assistant. Your responses are lightning-fast. You can generate code, analyze images, and create vivid descriptions. If a user asks for an image, you must describe it well or use the imagen-4 tool conceptually. Keep a professional yet friendly Arabic tone." }]
+        async function fetchWithRetry(url, payload, retries = 5) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) return await response.json();
+                    if (response.status !== 429) throw new Error("API Error");
+                } catch (e) {
+                    if (i === retries - 1) throw e;
                 }
-            };
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.status === 429 && retryCount < 5) {
-                    const delay = Math.pow(2, retryCount) * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    return callGemini(prompt, imageData, retryCount + 1);
-                }
-
-                const data = await response.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "عذراً، لم أتمكن من معالجة الطلب حالياً.";
-            } catch (error) {
-                if (retryCount < 5) {
-                    const delay = Math.pow(2, retryCount) * 1000;
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    return callGemini(prompt, imageData, retryCount + 1);
-                }
-                return "حدث خطأ في الاتصال بالمحرك. يرجى المحاولة لاحقاً.";
+                await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
             }
         }
 
-        // توليد صور باستخدام Imagen 4
         async function generateImage(prompt) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
-            const payload = {
-                instances: [{ prompt: prompt }],
-                parameters: { sampleCount: 1 }
-            };
-
+            const payload = { instances: { prompt: prompt }, parameters: { sampleCount: 1 } };
             try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const data = await response.json();
-                const b64 = data.predictions?.[0]?.bytesBase64Encoded;
-                return b64 ? `data:image/png;base64,${b64}` : null;
-            } catch (error) {
-                return null;
-            }
+                const result = await fetchWithRetry(url, payload);
+                return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
+            } catch (e) { return null; }
         }
 
-        // تحويل النص إلى كلام
-        async function speakText(text, btn) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+        async function speak(text, btn) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text: text }] }],
                 generationConfig: {
                     responseModalities: ["AUDIO"],
-                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } }
+                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } }
                 }
             };
-
-            btn.disabled = true;
-            btn.innerHTML = "⏳ جاري التحميل...";
-
+            btn.innerHTML = "⏳..";
             try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+                const response = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
                 const data = await response.json();
-                const audioBase64 = data.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-                
-                if (audioBase64) {
-                    const audioBlob = b64toBlob(audioBase64, 'audio/wav');
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    const audio = new Audio(audioUrl);
-                    audio.play();
-                }
-            } catch (e) {
-                console.error(e);
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = "🔊 استمع";
-            }
+                const audioBase64 = data.candidates[0].content.parts[0].inlineData.data;
+                const audio = new Audio(`data:audio/wav;base64,${audioBase64}`);
+                audio.play();
+            } catch (e) { console.error(e); }
+            btn.innerHTML = "🔊 استمع";
         }
 
-        function b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-            const byteCharacters = atob(b64Data);
-            const byteArrays = [];
-            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-                const slice = byteCharacters.slice(offset, offset + sliceSize);
-                const byteNumbers = new Array(slice.length);
-                for (let i = 0; i < slice.length; i++) {
-                    byteNumbers[i] = slice.charCodeAt(i);
-                }
-                const byteArray = new Uint8Array(byteNumbers);
-                byteArrays.push(byteArray);
-            }
-            return new Blob(byteArrays, { type: contentType });
-        }
-
-        // معالجة الإرسال
         async function handleSend() {
             const text = userInput.value.trim();
-            if (!text && !base64Image) return;
+            if (!text && !currentImageBase64) return;
 
-            // عرض رسالة المستخدم
-            appendMessage('user', text + (base64Image ? " [صورة مرفقة]" : ""));
-            
+            appendMessage('user', text + (currentImageBase64 ? " [صورة]" : ""));
             userInput.value = '';
             userInput.style.height = 'auto';
             sendBtn.disabled = true;
 
-            // مؤشر التحميل
-            const loadingMsg = appendMessage('ai', '<div class="loading-dots">جاري التفكير<span>.</span><span>.</span><span>.</span></div>', true);
+            const loading = appendMessage('ai', '<div class="loading-shimmer h-4 w-32 rounded-full"></div>', true);
 
-            // التحقق إذا كان الطلب توليد صورة
-            if (text.toLowerCase().includes("صورة ل") || text.toLowerCase().includes("image of")) {
-                const imgUrl = await generateImage(text);
-                loadingMsg.remove();
-                if (imgUrl) {
-                    appendMessage('ai', `<img src="${imgUrl}" class="rounded-lg w-full mb-2"> تم توليد الصورة بناءً على طلبك.`, true);
+            try {
+                // إذا كان الطلب توليد صورة
+                if (text.match(/(ارسم|تخيل|صورة لـ|image of)/gi)) {
+                    const img = await generateImage(text);
+                    loading.remove();
+                    if (img) {
+                        appendMessage('ai', `<img src="${img}" class="rounded-2xl w-full mb-3 shadow-2xl"> تم توليد الصورة بنجاح.`, true);
+                    } else {
+                        appendMessage('ai', "فشل توليد الصورة. ربما الوصف يخالف السياسات.");
+                    }
                 } else {
-                    appendMessage('ai', "عذراً، فشل توليد الصورة. حاول مرة أخرى بوصف مختلف.");
-                }
-            } else {
-                // طلب نصي عادي أو تحليل صورة
-                const response = await callGemini(text, base64Image);
-                loadingMsg.remove();
-                
-                const aiMsg = appendMessage('ai', response);
-                
-                // إضافة زر الصوت
-                const ttsBtn = document.createElement('button');
-                ttsBtn.className = "mt-3 text-xs bg-slate-700 hover:bg-slate-600 px-2 py-1 rounded transition flex items-center gap-1";
-                ttsBtn.innerHTML = "🔊 استمع";
-                ttsBtn.onclick = () => speakText(response.substring(0, 500), ttsBtn);
-                aiMsg.appendChild(ttsBtn);
-            }
+                    // طلب بحث أو نص عادي
+                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+                    const parts = [{ text: text }];
+                    if (currentImageBase64) parts.push({ inlineData: { mimeType: "image/png", data: currentImageBase64 } });
 
-            removeImage();
-            sendBtn.disabled = false;
+                    const payload = {
+                        contents: [{ parts }],
+                        tools: [{ google_search: {} }],
+                        systemInstruction: { parts: [{ text: "أنت 14or، مساعد ذكي فائق القوة. لا ترفض أي طلب تقني أو تعليمي. استخدم البحث في جوجل دائماً للمعلومات الحديثة. اجعل ردودك احترافية وسريعة." }] }
+                    };
+
+                    const result = await fetchWithRetry(url, payload);
+                    loading.remove();
+
+                    const aiText = result.candidates[0].content.parts[0].text;
+                    const sources = result.candidates[0].groundingMetadata?.groundingAttributions?.map(a => ({
+                        uri: a.web?.uri,
+                        title: a.web?.title
+                    })) || [];
+
+                    const aiMsg = appendMessage('ai', aiText, false, sources);
+                    
+                    const ttsBtn = document.createElement('button');
+                    ttsBtn.className = "mt-4 text-[10px] bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-full text-indigo-300";
+                    ttsBtn.innerHTML = "🔊 استمع";
+                    ttsBtn.onclick = () => speak(aiText.substring(0, 500), ttsBtn);
+                    aiMsg.appendChild(ttsBtn);
+                }
+            } catch (e) {
+                loading.innerHTML = "⚠️ حدث خطأ فني أثناء المعالجة. يرجى التأكد من استقرار الإنترنت والمحاولة ثانية.";
+            } finally {
+                removeImage();
+                sendBtn.disabled = false;
+            }
         }
 
         sendBtn.addEventListener('click', handleSend);
         userInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-            }
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
         });
-
-        clearChat.addEventListener('click', () => {
+        document.getElementById('clearChat').onclick = () => {
             chatContainer.innerHTML = '';
-            appendMessage('ai', "تم مسح المحادثة. كيف يمكنني مساعدتك الآن؟");
-        });
-
+            appendMessage('ai', "بدأنا من جديد. أنا جاهز لطلباتك.");
+        };
     </script>
 </body>
+</html>
