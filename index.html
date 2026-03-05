@@ -57,9 +57,28 @@
         code { font-family: 'Consolas', monospace; color: #60a5fa; }
         .source-link {
             font-size: 0.75rem;
-            color: #94a3b8;
-            text-decoration: underline;
+            color: #38bdf8;
+            text-decoration: none;
             margin-right: 0.5rem;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .source-link:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+        .error-message {
+            background-color: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .success-indicator {
+            color: #86efac;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -74,11 +93,11 @@
                         <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
                     </svg>
                 </div>
-                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-slate-900 rounded-full"></div>
+                <div id="connectionStatus" class="absolute -bottom-1 -right-1 w-4 h-4 bg-yellow-500 border-2 border-slate-900 rounded-full" title="Connecting..."></div>
             </div>
             <div>
                 <h1 class="text-xl font-bold tracking-tight text-white">14or AI</h1>
-                <p class="text-[10px] text-indigo-400 font-mono uppercase tracking-widest">Ultra Performance Engine</p>
+                <p class="text-[10px] text-indigo-400 font-mono uppercase tracking-widest" id="statusText">جارٍ الاتصال...</p>
             </div>
         </div>
         <button id="clearChat" class="text-xs font-semibold text-slate-400 hover:text-white transition-colors bg-slate-800/50 px-4 py-2 rounded-full border border-slate-700">
@@ -88,13 +107,12 @@
 
     <!-- Chat Space -->
     <main id="chatContainer" class="flex-1 overflow-y-auto p-6 space-y-6 chat-container flex flex-col">
-        <!-- Initial Message -->
         <div class="message-ai p-5 rounded-3xl max-w-[90%] md:max-w-[75%] shadow-xl">
-            <p class="font-bold text-indigo-300 mb-2">تم تحديث النظام إلى الإصدار الفائق 14or ✨</p>
-            أنا الآن متصل بـ <span class="text-white border-b border-rose-500">Google Search</span> و <span class="text-white border-b border-blue-500">Imagen 4</span>. لقد تم إصلاح أخطاء المعالجة السابقة.
+            <p class="font-bold text-indigo-300 mb-2">🚀 مرحباً بك في 14or</p>
+            أنا متصل بـ Gemini 2.0 Flash والإنترنت مباشرة. يمكنك سؤالي عن أي شيء وسأقدم لك أحدث المعلومات.
             <div class="grid grid-cols-2 gap-2 mt-4">
-                <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 italic">"ارسم لي مدينة مستقبلية"</div>
-                <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 italic">"ما هي آخر أخبار التقنية اليوم؟"</div>
+                <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 italic">"ما أخبار التكنولوجيا اليوم؟"</div>
+                <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 italic">"من فاز في آخر مباراة؟"</div>
             </div>
         </div>
     </main>
@@ -123,13 +141,13 @@
                     <svg class="w-6 h-6 text-white rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
                 </button>
             </div>
-            <p class="text-[10px] text-center text-slate-600 mt-2">14or Intelligence System • Connected via Gemini Pro Flash</p>
+            <p class="text-[10px] text-center text-slate-600 mt-2">14or Intelligence System • Powered by Gemini 2.0 Flash</p>
         </div>
     </footer>
 
     <script>
-        const apiKey = ""; // الموفر آلياً
         let currentImageBase64 = null;
+        let conversationHistory = [];
 
         const chatContainer = document.getElementById('chatContainer');
         const userInput = document.getElementById('userInput');
@@ -137,6 +155,28 @@
         const fileInput = document.getElementById('fileInput');
         const previewContainer = document.getElementById('imagePreviewContainer');
         const previewImg = document.getElementById('previewImg');
+        const connectionStatus = document.getElementById('connectionStatus');
+        const statusText = document.getElementById('statusText');
+
+        // Check server connection on load
+        async function checkConnection() {
+            try {
+                const response = await fetch('/api/health', { timeout: 5000 });
+                if (response.ok) {
+                    connectionStatus.className = 'absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-slate-900 rounded-full';
+                    statusText.textContent = 'Connected to Gemini ✓';
+                    statusText.className = 'text-[10px] text-green-400 font-mono uppercase tracking-widest success-indicator';
+                }
+            } catch (e) {
+                connectionStatus.className = 'absolute -bottom-1 -right-1 w-4 h-4 bg-red-500 border-2 border-slate-900 rounded-full';
+                statusText.textContent = 'Connection Failed';
+                statusText.className = 'text-[10px] text-red-400 font-mono uppercase tracking-widest';
+                console.error('Connection check failed:', e);
+            }
+        }
+
+        checkConnection();
+        setInterval(checkConnection, 30000); // Check every 30 seconds
 
         userInput.addEventListener('input', () => {
             userInput.style.height = 'auto';
@@ -146,6 +186,10 @@
         function handleImage(e) {
             const file = e.target.files[0];
             if (file) {
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('الصورة كبيرة جداً (الحد الأقصى 20 MB)');
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     currentImageBase64 = event.target.result.split(',')[1];
@@ -175,12 +219,14 @@
                 msgDiv.innerHTML = marked.parse(content);
             }
 
-            if (sources.length > 0) {
+            if (sources && sources.length > 0) {
                 const sourceDiv = document.createElement('div');
-                sourceDiv.className = "mt-3 pt-2 border-t border-slate-700/50 flex flex-wrap gap-1";
-                sourceDiv.innerHTML = `<span class="text-[10px] text-slate-500 w-full mb-1">المصادر:</span>`;
-                sources.forEach(s => {
-                    sourceDiv.innerHTML += `<a href="${s.uri}" target="_blank" class="source-link">🔗 ${s.title}</a>`;
+                sourceDiv.className = "mt-3 pt-2 border-t border-slate-700/50 flex flex-wrap gap-2";
+                sourceDiv.innerHTML = `<span class="text-[10px] text-slate-500 w-full mb-1">📚 المصادر:</span>`;
+                sources.forEach((s, idx) => {
+                    if (s && s.uri) {
+                        sourceDiv.innerHTML += `<a href="${s.uri}" target="_blank" rel="noopener noreferrer" class="source-link">🔗 المصدر ${idx + 1}</a>`;
+                    }
                 });
                 msgDiv.appendChild(sourceDiv);
             }
@@ -191,104 +237,107 @@
             return msgDiv;
         }
 
-        async function fetchWithRetry(url, payload, retries = 5) {
+        async function fetchWithRetry(url, payload, retries = 3) {
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
+                        body: JSON.stringify(payload),
+                        timeout: 30000
                     });
-                    if (response.ok) return await response.json();
-                    if (response.status !== 429) throw new Error("API Error");
+                    
+                    const data = await response.json();
+                    if (response.ok) return data;
+                    
+                    if (response.status === 429 && i < retries - 1) {
+                        const delay = Math.pow(2, i) * 1000;
+                        await new Promise(r => setTimeout(r, delay));
+                        continue;
+                    }
+                    
+                    throw new Error(data.error?.message || `API Error: ${response.status}`);
                 } catch (e) {
                     if (i === retries - 1) throw e;
+                    await new Promise(r => setTimeout(r, 1000));
                 }
-                await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
             }
-        }
-
-        async function generateImage(prompt) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
-            const payload = { instances: { prompt: prompt }, parameters: { sampleCount: 1 } };
-            try {
-                const result = await fetchWithRetry(url, payload);
-                return `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
-            } catch (e) { return null; }
-        }
-
-        async function speak(text, btn) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts?key=${apiKey}`;
-            const payload = {
-                contents: [{ parts: [{ text: text }] }],
-                generationConfig: {
-                    responseModalities: ["AUDIO"],
-                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } }
-                }
-            };
-            btn.innerHTML = "⏳..";
-            try {
-                const response = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
-                const data = await response.json();
-                const audioBase64 = data.candidates[0].content.parts[0].inlineData.data;
-                const audio = new Audio(`data:audio/wav;base64,${audioBase64}`);
-                audio.play();
-            } catch (e) { console.error(e); }
-            btn.innerHTML = "🔊 استمع";
         }
 
         async function handleSend() {
             const text = userInput.value.trim();
             if (!text && !currentImageBase64) return;
 
-            appendMessage('user', text + (currentImageBase64 ? " [صورة]" : ""));
+            // Add user message to history
+            appendMessage('user', text + (currentImageBase64 ? " [تحليل صورة]" : ""));
             userInput.value = '';
             userInput.style.height = 'auto';
             sendBtn.disabled = true;
 
-            const loading = appendMessage('ai', '<div class="loading-shimmer h-4 w-32 rounded-full"></div>', true);
+            const loading = appendMessage('ai', '<div class="flex items-center gap-2"><div class="loading-shimmer h-4 w-4 rounded-full"></div><span class="text-xs italic">14or يعالج الطلب...</span></div>', true);
 
             try {
-                // إذا كان الطلب توليد صورة
-                if (text.match(/(ارسم|تخيل|صورة لـ|image of)/gi)) {
-                    const img = await generateImage(text);
-                    loading.remove();
-                    if (img) {
-                        appendMessage('ai', `<img src="${img}" class="rounded-2xl w-full mb-3 shadow-2xl"> تم توليد الصورة بنجاح.`, true);
-                    } else {
-                        appendMessage('ai', "فشل توليد الصورة. ربما الوصف يخالف السياسات.");
-                    }
-                } else {
-                    // طلب بحث أو نص عادي
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-                    const parts = [{ text: text }];
-                    if (currentImageBase64) parts.push({ inlineData: { mimeType: "image/png", data: currentImageBase64 } });
+                // Build request content
+                const userContent = {
+                    role: "user",
+                    parts: [{ text: text }]
+                };
 
-                    const payload = {
-                        contents: [{ parts }],
-                        tools: [{ google_search: {} }],
-                        systemInstruction: { parts: [{ text: "أنت 14or، مساعد ذكي فائق القوة. لا ترفض أي طلب تقني أو تعليمي. استخدم البحث في جوجل دائماً للمعلومات الحديثة. اجعل ردودك احترافية وسريعة." }] }
-                    };
-
-                    const result = await fetchWithRetry(url, payload);
-                    loading.remove();
-
-                    const aiText = result.candidates[0].content.parts[0].text;
-                    const sources = result.candidates[0].groundingMetadata?.groundingAttributions?.map(a => ({
-                        uri: a.web?.uri,
-                        title: a.web?.title
-                    })) || [];
-
-                    const aiMsg = appendMessage('ai', aiText, false, sources);
-                    
-                    const ttsBtn = document.createElement('button');
-                    ttsBtn.className = "mt-4 text-[10px] bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded-full text-indigo-300";
-                    ttsBtn.innerHTML = "🔊 استمع";
-                    ttsBtn.onclick = () => speak(aiText.substring(0, 500), ttsBtn);
-                    aiMsg.appendChild(ttsBtn);
+                if (currentImageBase64) {
+                    userContent.parts.push({
+                        inlineData: {
+                            mimeType: "image/jpeg",
+                            data: currentImageBase64
+                        }
+                    });
                 }
-            } catch (e) {
-                loading.innerHTML = "⚠️ حدث خطأ فني أثناء المعالجة. يرجى التأكد من استقرار الإنترنت والمحاولة ثانية.";
+
+                conversationHistory.push(userContent);
+
+                // Send to backend
+                const payload = {
+                    contents: conversationHistory,
+                    systemInstruction: {
+                        parts: [{
+                            text: 'أنت 14or، مساعد ذكي فائق متصل بالإنترنت عبر Google Search. اسم النموذج: Gemini 2.0 Flash. قدم دائماً أدق وأحدث المعلومات. للاستفسارات الحالية والإحصائيات الحية، استخدم ميزة البحث فوراً.'
+                        }]
+                    }
+                };
+
+                const result = await fetchWithRetry('/api/gemini', payload);
+                loading.remove();
+
+                if (!result.candidates || !result.candidates[0]) {
+                    throw new Error('No response from Gemini API');
+                }
+
+                const candidate = result.candidates[0];
+                const aiText = candidate.content?.parts[0]?.text || 'لم أتمكن من معالجة الطلب.';
+
+                // Extract sources from grounding data
+                const sources = [];
+                if (candidate.groundingMetadata?.groundingAttributions) {
+                    candidate.groundingMetadata.groundingAttributions.forEach(attr => {
+                        if (attr.web?.uri) {
+                            sources.push({
+                                uri: attr.web.uri,
+                                title: attr.web.title || 'مصدر'
+                            });
+                        }
+                    });
+                }
+
+                // Add AI response to history
+                conversationHistory.push({
+                    role: "model",
+                    parts: [{ text: aiText }]
+                });
+
+                appendMessage('ai', aiText, false, sources);
+
+            } catch (error) {
+                console.error('Request error:', error);
+                loading.innerHTML = `<div class="error-message"><strong>⚠️ خطأ:</strong> ${error.message}</div>`;
             } finally {
                 removeImage();
                 sendBtn.disabled = false;
@@ -297,11 +346,16 @@
 
         sendBtn.addEventListener('click', handleSend);
         userInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+            }
         });
+
         document.getElementById('clearChat').onclick = () => {
             chatContainer.innerHTML = '';
-            appendMessage('ai', "بدأنا من جديد. أنا جاهز لطلباتك.");
+            conversationHistory = [];
+            appendMessage('ai', '✨ تم تصفير المحادثة. كيف يمكن لـ 14or مساعدتك؟');
         };
     </script>
 </body>
