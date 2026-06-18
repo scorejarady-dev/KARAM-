@@ -1,381 +1,185 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>x1 - نظام المحاسبة الذكي</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #f8fafc;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-        }
-        @media print {
-            .no-print { display: none !important; }
-            #printable-receipt {
-                width: 58mm;
-                padding: 5mm;
-                background: white;
-                color: black;
-            }
-        }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
-</head>
-<body class="text-slate-800">
 
-    <!-- Header -->
-    <header class="bg-slate-900 text-white shadow-2xl sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="gradient-bg p-2 rounded-xl shadow-lg">
-                    <i data-lucide="zap" class="w-6 h-6 text-white"></i>
-                </div>
-                <h1 class="text-2xl font-black tracking-tighter">x1</h1>
-            </div>
-            
-            <nav class="hidden md:flex bg-slate-800 rounded-full p-1 border border-slate-700">
-                <button onclick="switchTab('billing')" id="btn-billing" class="px-6 py-1.5 rounded-full transition-all text-sm font-bold bg-indigo-600 text-white">
-                    الفوترة
-                </button>
-                <button onclick="switchTab('index')" id="btn-index" class="px-6 py-1.5 rounded-full transition-all text-sm font-bold text-slate-400 hover:text-white">
-                    الفهرس
-                </button>
-            </nav>
+محادثة مع Gemini
+اريد انشاء تطبيق شكاوي بين الحكومة والمواطن يكون هناك ربط بين المواطن عن طريق حساب مواطن والحكومة عن طريق حساب حكومي : التطبيق عبارة عن محادة خاصة للمواطن بينه وبين الجهات المعنية من مرور وداخلية وامن وجميع الجهات اي ان المواطن يعبر عن شكوته عن طريق التصوير فيديو كان أو صورة ويرفقها بنص اسفل الصورة ويقوم بارسالها الى اي جهة حكومية يرغب بمراسلتها اريد تسمية التطبيق " شوفة عينك " و أن تكون الوان التطبيق ملائمة للهوية البصرية السورية الجديدة تماما اريد التطبيق يبدوانه تم صنعه بواسطة مبرمج احترافي وليس بادوات الذكاء الاصطناعي وأن يكون به التنقل عبر النوافذ باحترافية وان تكون به نوافذ بلورية وجميلة مع لوحة تحكم خاصة لمدير المنصة يتلقى فيها الشكاوى ويرد عليها (اريد برومبت بذلك
 
-            <div class="flex items-center gap-4">
-                <span id="user-badge" class="hidden text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20">متصل سحابياً</span>
-            </div>
-        </div>
-    </header>
+إليك هندسة "برومبت" (Prompt) احترافي وشامل، مصمم خصيصاً لتقديمه لأدوات الذكاء الاصطناعي المتقدمة في البرمجة (مثل Cursor أو v0 أو Claude Sonnet 3.5) لضمان الحصول على كود متكامل، بتصميم عصري وتقنيات حديثة تتجاوز القوالب الجاهزة.
 
-    <main class="max-w-7xl mx-auto p-4 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        <!-- Left Column: Operations -->
-        <div class="lg:col-span-8 space-y-6">
-            
-            <!-- Input Section -->
-            <section class="glass-card rounded-[2rem] p-6 shadow-xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 gradient-bg"></div>
-                <h2 class="text-lg font-bold mb-6 flex items-center gap-2">
-                    <i data-lucide="plus-circle" class="text-indigo-600"></i>
-                    إضافة منتج للفاتورة
-                </h2>
+لقد تم بناء البرومبت ليعتمد على بيئة عمل حديثة (مثل Next.js و React) لضمان السلاسة، مع دمج توقيعك الشخصي بصمت في واجهة التطبيق.
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-2">
-                        <label class="text-[10px] font-bold text-slate-400 uppercase mr-1">المنتج</label>
-                        <input id="in-name" type="text" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-3 focus:border-indigo-500 outline-none transition-all" placeholder="اسم المنتج...">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase mr-1">التصنيف</label>
-                        <input id="in-type" type="text" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-3 focus:border-indigo-500 outline-none" placeholder="عام">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase mr-1">السعر</label>
-                        <input id="in-price" type="number" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-3 focus:border-indigo-500 outline-none" placeholder="0.00">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase mr-1">الكمية</label>
-                        <input id="in-qty" type="number" value="1" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-3 focus:border-indigo-500 outline-none">
-                    </div>
-                    <div class="flex items-end gap-2">
-                        <button onclick="addItem()" class="flex-grow gradient-bg text-white font-bold py-3 rounded-2xl hover:opacity-90 transition-all shadow-lg shadow-indigo-100">
-                            إضافة
-                        </button>
-                        <button onclick="saveToIndex()" class="p-3 border-2 border-indigo-500 text-indigo-500 rounded-2xl hover:bg-indigo-50" title="حفظ في الفهرس">
-                            <i data-lucide="bookmark"></i>
-                        </button>
-                    </div>
-                </div>
+انسخ النص التالي بالكامل والصقه في أداة الذكاء الاصطناعي:
+الدور: أنت مهندس برمجيات شامل (Senior Full-Stack Developer) وخبير متمرس في تصميم واجهات المستخدم (UI/UX Expert).
 
-                <!-- Notes Section -->
-                <div class="mt-4">
-                    <label class="text-[10px] font-bold text-slate-400 uppercase mr-1">ملاحظات إضافية</label>
-                    <textarea id="in-notes" rows="2" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-3 focus:border-indigo-500 outline-none resize-none" placeholder="اكتب أي ملاحظات هنا..."></textarea>
-                </div>
-            </section>
+المشروع: بناء تطبيق ويب متكامل ومخصص بالكامل تحت اسم "شوفة عينك". التطبيق عبارة عن منصة رسمية لربط المواطن بالجهات الحكومية لتقديم الشكاوى بأسلوب احترافي وآمن.
 
-            <!-- Table Section -->
-            <div id="tab-billing-content">
-                <section class="glass-card rounded-[2rem] p-6 shadow-xl">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-bold">محتويات الفاتورة</h2>
-                        <span id="grand-total" class="bg-indigo-50 text-indigo-600 px-6 py-2 rounded-full font-black text-xl">0.00 ر.س</span>
-                    </div>
-                    
-                    <div id="items-list" class="space-y-3 min-h-[200px]">
-                        <!-- Items injected here -->
-                        <div class="text-center py-12 text-slate-400 italic">الفاتورة فارغة حالياً</div>
-                    </div>
-                </section>
-            </div>
+التقنيات المطلوبة: استخدم Next.js و React و Tailwind CSS، مع استخدام مكتبة Framer Motion لإنشاء انتقالات حركية (Transitions) احترافية جداً بين النوافذ، وتجنب تماماً التصاميم التقليدية أو الواجهات التي تبدو وكأنها مولدة آلياً.
 
-            <div id="tab-index-content" class="hidden">
-                <section class="glass-card rounded-[2rem] p-6 shadow-xl">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg font-bold text-indigo-600">فهرس x1 الذكي</h2>
-                        <input oninput="filterIndex(this.value)" type="text" class="bg-slate-100 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 ring-indigo-500" placeholder="بحث سريع...">
-                    </div>
-                    <div id="product-index" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <!-- Index items injected here -->
-                    </div>
-                </section>
-            </div>
+الهوية البصرية والتصميم (UI/UX):
 
-        </div>
+الألوان: يجب أن تلتزم الواجهة بألوان الهوية البصرية السورية الجديدة (تدرجات الأبيض النقي، الأسود الأنيق، مع لمسات احترافية من الأحمر والأخضر لتمييز الحالات والأزرار).
 
-        <!-- Right Column: Sidebar & Preview -->
-        <div class="lg:col-span-4">
-            <div class="sticky top-24 space-y-6">
-                
-                <!-- Receipt Preview -->
-                <div class="glass-card rounded-[2rem] p-6 shadow-xl">
-                    <h3 class="text-center text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6">معاينة إيصال x1</h3>
-                    
-                    <div class="flex justify-center bg-slate-50 py-8 rounded-3xl border-2 border-dashed border-slate-200">
-                        <div id="printable-receipt" class="bg-white shadow-2xl p-4 text-black font-mono leading-tight" style="width: 58mm; min-height: 80mm;">
-                            <div class="text-center mb-4 border-b pb-2 border-black">
-                                <h1 class="text-2xl font-bold">x1</h1>
-                                <p class="text-[9px]">رقم الفاتورة: <span id="rec-number">0000</span></p>
-                                <p id="rec-date" class="text-[9px]">00/00/0000</p>
-                            </div>
+النمط البصري (Glassmorphism): استخدم تأثير الزجاج البلوري (نوافذ شفافة مع ضبابية خلفية Backdrop-blur) للبطاقات والقوائم المنسدلة، مما يعطي إحساساً بالفخامة والعمق التقني.
 
-                            <div id="rec-items" class="text-[10px] space-y-1 mb-4">
-                                <!-- Items for print -->
-                            </div>
+التنقل: يجب أن يكون التنقل بين الصفحات سلساً (SPA Flow) وبدون إعادة تحميل، مع تأثيرات دخول وخروج للنوافذ.
 
-                            <div class="border-t border-black pt-2 mb-4">
-                                <div class="flex justify-between font-bold text-sm">
-                                    <span>المجموع</span>
-                                    <span id="rec-total">0.00</span>
-                                </div>
-                            </div>
+الميزات الأساسية والتقسيم:
 
-                            <div id="rec-notes-display" class="text-[8px] italic mb-4 text-slate-600"></div>
+1. نظام الحسابات (Authentication):
 
-                            <div class="text-center text-[8px]">
-                                <p>شكراً لتعاملكم مع نظام x1</p>
-                                <div class="flex justify-center mt-2 opacity-50">|||| || | ||| || |||</div>
-                            </div>
-                        </div>
-                    </div>
+بوابة دخول للمواطن (حساب مواطن).
 
-                    <div class="mt-6 space-y-3">
-                        <button onclick="window.print()" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-black transition-all shadow-xl">
-                            <i data-lucide="printer" class="w-5 h-5"></i> طباعة فورية
-                        </button>
-                        <button onclick="clearInvoice()" class="w-full py-4 bg-white border-2 border-slate-100 text-rose-500 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-rose-50 transition-all">
-                            <i data-lucide="trash-2" class="w-5 h-5"></i> مسح الفاتورة
-                        </button>
-                    </div>
-                </div>
+بوابة دخول للجهات الحكومية (حساب حكومي).
 
-                <!-- Info Box -->
-                <div class="gradient-bg rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden">
-                    <i data-lucide="shield-check" class="absolute -right-4 -bottom-4 w-24 h-24 opacity-10"></i>
-                    <h4 class="font-bold flex items-center gap-2 mb-2">
-                        <i data-lucide="info" class="w-4 h-4"></i> تنبيه ذكي
-                    </h4>
-                    <p class="text-xs opacity-80 leading-relaxed">
-                        نظام x1 يقوم بحفظ الفهرس في ذاكرة المتصفح تلقائياً. الملاحظات تظهر فقط في الإيصال المطبوع.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </main>
+2. واجهة المواطن (Citizen Dashboard):
 
-    <script>
-        // --- State Management ---
-        let items = [];
-        let productIndex = JSON.parse(localStorage.getItem('x1_index')) || [];
-        let currentNotes = "";
+زر بارز لتقديم شكوى جديدة.
 
-        // Initialize Icons
-        lucide.createIcons();
+نظام رفع وسائط (فيديو أو صور) مع معاينة فورية قبل الإرسال.
 
-        // --- Core Functions ---
+مربع نصي (Text Area) أسفل الصورة/الفيديو لكتابة تفاصيل الشكوى.
 
-        function addItem() {
-            const name = document.getElementById('in-name').value;
-            const price = parseFloat(document.getElementById('in-price').value);
-            const qty = parseInt(document.getElementById('in-qty').value);
-            const type = document.getElementById('in-type').value || "عام";
-            currentNotes = document.getElementById('in-notes').value;
+قائمة منسدلة (Dropdown) مصممة باحترافية لاختيار الجهة الموجهة إليها الشكوى (مثل: المرور، وزارة الداخلية، الأمن الجنائي، حماية المستهلك، البلدية، وغيرها).
 
-            if (!name || isNaN(price)) {
-                alert("الرجاء إدخال اسم المنتج وسعر صحيح");
-                return;
-            }
+واجهة محادثة خاصة (Private Chat) على شكل "شات" تفاعلي، تتيح للمواطن التحدث مباشرة مع ممثل الجهة الحكومية ومتابعة حالة الشكوى (قيد المراجعة، تم الحل).
 
-            const item = {
-                id: Date.now(),
-                name,
-                price,
-                qty,
-                type,
-                total: price * qty
-            };
+3. لوحة تحكم الإدارة والحكومة (Government Admin Panel):
 
-            items.push(item);
-            updateUI();
-            clearInputs();
-        }
+لوحة تحكم (Dashboard) تعرض إحصائيات سريعة للشكاوى.
 
-        function clearInputs() {
-            document.getElementById('in-name').value = "";
-            document.getElementById('in-price').value = "";
-            document.getElementById('in-qty').value = "1";
-            document.getElementById('in-type').value = "";
-        }
+نظام فلترة لفرز الشكاوى حسب الجهة المستهدفة.
 
-        function removeItem(id) {
-            items = items.filter(i => i.id !== id);
-            updateUI();
-        }
+واجهة لتلقي الشكاوى الجديدة، مع إمكانية فتح محادثة مباشرة للرد على المواطن صاحب الشكوى (بأسلوب مشابه لتطبيقات المراسلة الحديثة).
 
-        function clearInvoice() {
-            if(confirm("هل أنت متأكد من مسح الفاتورة؟")) {
-                items = [];
-                currentNotes = "";
-                document.getElementById('in-notes').value = "";
-                updateUI();
-            }
-        }
+تفاصيل إضافية:
 
-        function saveToIndex() {
-            const name = document.getElementById('in-name').value;
-            const price = parseFloat(document.getElementById('in-price').value);
-            const type = document.getElementById('in-type').value || "عام";
+قم بتضمين عبارة by ABODY بخط صغير وأنيق جداً في أسفل التذييل (Footer) كمصمم ومطور للمنصة.
 
-            if (!name || isNaN(price)) return;
+اكتب الكود البرمجي ليكون جاهزاً للعمل، مع ترتيب المكونات (Components) بشكل هيكلي صحيح. ابدأ بكتابة هيكل المشروع، ثم قدم الكود الخاص بالصفحة الرئيسية (Home)، واجهة المواطن، ولوحة تحكم الإدارة.
 
-            productIndex.push({ id: Date.now(), name, price, type });
-            localStorage.setItem('x1_index', JSON.stringify(productIndex));
-            renderIndex();
-            alert("تمت إضافة المنتج للفهرس بنجاح!");
-        }
+نصائح إضافية عند استخدام البرومبت:
+التقسيم: نظراً لأن التطبيق ضخم، قد يتوقف الذكاء الاصطناعي في منتصف كتابة الكود. إذا حدث ذلك، اكتب له ببساطة: "أكمل من حيث توقفت" (Continue exactly where you left off).
 
-        function renderIndex(filter = "") {
-            const container = document.getElementById('product-index');
-            container.innerHTML = "";
+الصور الرمزية (Icons): يمكنك لاحقاً إضافة مكتبة مثل Lucide React لتضمين أيقونات احترافية للجهات الحكومية (مثل أيقونة سيارة للمرور، درع للأمن).
 
-            const filtered = productIndex.filter(p => p.name.includes(filter));
+الدور: أنت مهندس برمجيات شامل (Senior Full-Stack Developer) وخبير متمرس في تصميم واجهات المستخدم (UI/UX Expert).
 
-            filtered.forEach(p => {
-                const div = document.createElement('div');
-                div.className = "p-4 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center group hover:border-indigo-500 cursor-pointer transition-all";
-                div.onclick = () => {
-                    document.getElementById('in-name').value = p.name;
-                    document.getElementById('in-price').value = p.price;
-                    document.getElementById('in-type').value = p.type;
-                    switchTab('billing');
-                };
-                div.innerHTML = `
-                    <div>
-                        <div class="font-bold">${p.name}</div>
-                        <div class="text-[10px] text-slate-400">${p.type}</div>
-                    </div>
-                    <div class="text-indigo-600 font-bold">${p.price} ر.س</div>
-                `;
-                container.appendChild(div);
-            });
-        }
+المشروع: بناء تطبيق ويب متكامل ومخصص بالكامل تحت اسم "شوفة عينك". التطبيق عبارة عن منصة رسمية لربط المواطن بالجهات الحكومية لتقديم الشكاوى بأسلوب احترافي وآمن.
 
-        function updateUI() {
-            const list = document.getElementById('items-list');
-            const recList = document.getElementById('rec-items');
-            const grandTotalDisplay = document.getElementById('grand-total');
-            const recTotalDisplay = document.getElementById('rec-total');
-            const notesDisplay = document.getElementById('rec-notes-display');
+التقنيات المطلوبة: استخدم Next.js و React و Tailwind CSS، مع استخدام مكتبة Framer Motion لإنشاء انتقالات حركية (Transitions) احترافية جداً بين النوافذ، وتجنب تماماً التصاميم التقليدية أو الواجهات التي تبدو وكأنها مولدة آلياً.
 
-            list.innerHTML = "";
-            recList.innerHTML = "";
-            let total = 0;
+الهوية البصرية والتصميم (UI/UX):
 
-            if (items.length === 0) {
-                list.innerHTML = '<div class="text-center py-12 text-slate-400 italic">الفاتورة فارغة حالياً</div>';
-            }
 
-            items.forEach(item => {
-                total += item.total;
-                
-                // Dashboard Item
-                const itemDiv = document.createElement('div');
-                itemDiv.className = "flex justify-between items-center p-4 bg-slate-50 rounded-2xl group border border-transparent hover:border-indigo-200 transition-all";
-                itemDiv.innerHTML = `
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center text-white font-bold text-xs">${item.qty}</div>
-                        <div>
-                            <div class="font-bold">${item.name}</div>
-                            <div class="text-xs text-slate-400">${item.type} | ${item.price} ر.س</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="font-black text-indigo-600">${item.total.toFixed(2)}</div>
-                        <button onclick="removeItem(${item.id})" class="text-slate-300 hover:text-rose-500 transition-colors"><i data-lucide="x-circle"></i></button>
-                    </div>
-                `;
-                list.appendChild(itemDiv);
 
-                // Print Item
-                const recDiv = document.createElement('div');
-                recDiv.className = "flex justify-between";
-                recDiv.innerHTML = `<span>${item.qty}x ${item.name}</span><span>${item.total.toFixed(2)}</span>`;
-                recList.appendChild(recDiv);
-            });
+الألوان: يجب أن تلتزم الواجهة بألوان الهوية البصرية السورية الجديدة (تدرجات الأبيض النقي، الأسود الأنيق، مع لمسات احترافية من الأحمر والأخضر لتمييز الحالات والأزرار).
 
-            grandTotalDisplay.innerText = total.toFixed(2) + " ر.س";
-            recTotalDisplay.innerText = total.toFixed(2);
-            notesDisplay.innerText = currentNotes ? "ملاحظة: " + currentNotes : "";
-            
-            // Update Receipt Date & Number
-            document.getElementById('rec-date').innerText = new Date().toLocaleDateString('ar-EG');
-            document.getElementById('rec-number').innerText = Math.floor(Math.random() * 9000 + 1000);
+النمط البصري (Glassmorphism): استخدم تأثير الزجاج البلوري (نوافذ شفافة مع ضبابية خلفية Backdrop-blur) للبطاقات والقوائم المنسدلة، مما يعطي إحساساً بالفخامة والعمق التقني.
 
-            lucide.createIcons();
-        }
+التنقل: يجب أن يكون التنقل بين الصفحات سلساً (SPA Flow) وبدون إعادة تحميل، مع تأثيرات دخول وخروج للنوافذ.
 
-        function switchTab(tab) {
-            const billingContent = document.getElementById('tab-billing-content');
-            const indexContent = document.getElementById('tab-index-content');
-            const btnBilling = document.getElementById('btn-billing');
-            const btnIndex = document.getElementById('btn-index');
+الميزات الأساسية والتقسيم:
 
-            if (tab === 'billing') {
-                billingContent.classList.remove('hidden');
-                indexContent.classList.add('hidden');
-                btnBilling.className = "px-6 py-1.5 rounded-full transition-all text-sm font-bold bg-indigo-600 text-white";
-                btnIndex.className = "px-6 py-1.5 rounded-full transition-all text-sm font-bold text-slate-400 hover:text-white";
-            } else {
-                billingContent.classList.add('hidden');
-                indexContent.classList.remove('hidden');
-                btnIndex.className = "px-6 py-1.5 rounded-full transition-all text-sm font-bold bg-indigo-600 text-white";
-                btnBilling.className = "px-6 py-1.5 rounded-full transition-all text-sm font-bold text-slate-400 hover:text-white";
-                renderIndex();
-            }
-        }
+1. نظام الحسابات (Authentication):
 
-        function filterIndex(val) {
-            renderIndex(val);
-        }
 
-        // Initial render
-        renderIndex();
-    </script>
-</body>
-</html>
+
+بوابة دخول للمواطن (حساب مواطن).
+
+بوابة دخول للجهات الحكومية (حساب حكومي).
+
+2. واجهة المواطن (Citizen Dashboard):
+
+
+
+زر بارز لتقديم شكوى جديدة.
+
+نظام رفع وسائط (فيديو أو صور) مع معاينة فورية قبل الإرسال.
+
+مربع نصي (Text Area) أسفل الصورة/الفيديو لكتابة تفاصيل الشكوى.
+
+قائمة منسدلة (Dropdown) مصممة باحترافية لاختيار الجهة الموجهة إليها الشكوى (مثل: المرور، وزارة الداخلية، الأمن الجنائي، حماية المستهلك، البلدية، وغيرها).
+
+واجهة محادثة خاصة (Private Chat) على شكل "شات" تفاعلي، تتيح للمواطن التحدث مباشرة مع ممثل الجهة الحكومية ومتابعة حالة الشكوى (قيد المراجعة، تم الحل).
+
+3. لوحة تحكم الإدارة والحكومة (Government Admin Panel):
+
+
+
+لوحة تحكم (Dashboard) تعرض إحصائيات سريعة للشكاوى.
+
+نظام فلترة لفرز الشكاوى حسب الجهة المستهدفة.
+
+واجهة لتلقي الشكاوى الجديدة، مع إمكانية فتح محادثة مباشرة للرد على المواطن صاحب الشكوى (بأسلوب مشابه لتطبيقات المراسلة الحديثة).
+
+تفاصيل إضافية:
+
+
+
+قم بتضمين عبارة by ABODY بخط صغير وأنيق جداً في أسفل التذييل (Footer) كمصمم ومطور للمنصة.
+
+اكتب الكود البرمجي ليكون جاهزاً للعمل، مع ترتيب المكونات (Components) بشكل هيكلي صحيح. ابدأ بكتابة هيكل المشروع، ثم قدم الكود الخاص بالصفحة الرئيسية (Home)، واجهة المواطن، ولوحة تحكم الإدارة.
+
+نصائح إضافية عند استخدام البرومبت:
+
+التقسيم: نظراً لأن التطبيق ضخم، قد يتوقف الذكاء الاصطناعي في منتصف كتابة الكود. إذا حدث ذلك، اكتب له ببساطة: "أكمل من حيث توقفت" (Continue exactly where you left off).
+
+الصور الرمزية (Icons): يمكنك لاحقاً إضافة مكتبة مثل Lucide React لتضمين أيقونات احترافية للجهات الحكومية (مثل أيقونة سيارة للمرور، درع للأمن).
+
+سأقوم الآن بإنشاء تطبيق "شوفة عينك" المتكامل والمبني بالكامل كملف واحد تفاعلي غني بالتفاصيل والجمالية البصرية الاستثنائية التي تعبر عن الهوية السورية الحديثة بأسلوب زجاجي راقٍ وبمستويات أداء وتصميم تضاهي عمل كبار المحترفين.
+
+سأضمن في التطبيق:
+
+تصميم زجاجي بلوري (Glassmorphism) مع تدرجات لونية مستوحاة من الهوية السورية الجديدة (تداخل ساحر بين الأسود الفاخر، الأبيض النقي، لمسات الأحمر القرمزي المتوهج والأخضر الزمردي لحالات الشكاوى).
+
+شاشات تنقل ذكية ومرنة تحاكي الانتقال الفوري وبشكل تفاعلي خالي من التقطيع.
+
+بوابة دخول ثنائية (مواطن / حكومة) بمظهر فائق العصرية.
+
+قسم تقديم الشكاوى للمواطن مع إمكانية رفع الصور والفيديو، توليد المعاينة الحية فوراً، واختيار الجهة المسؤولة بذكاء.
+
+نظام مراسلة وتحديث حالة فوري (Private Chat) تفاعلي بين المواطن والجهة الحكومية.
+
+لوحة تحكم حكومية شاملة لفرز الشكاوى، استعراض الإحصائيات الذكية والرد السريع وتغيير الحالات.
+
+بصمة المطور الأنيقة by ABODY مدمجة بسلاسة في التذييل لتعكس احترافية اللمسة الفنية.
+
+إليك الكود المصدري الكامل للتطبيق:
+Shoofat Einak - Syria Complaints Platform
+18 يونيو، 6:57 م
+
+اريد الكود بالصغة الهيكلية html
+
+سأقوم الآن بإنشاء وتطوير تطبيق "شوفة عينك" بالصيغة الهيكلية المتكاملة والمكتوبة بلغة HTML و CSS و JavaScript في ملف واحد متكامل.
+
+تم تصميم الكود باحترافية بالغة ليعمل فوراً، وبشكل تفاعلي وسلس تماماً كنسخة الـ React، مع تطبيق:
+
+ألوان الهوية البصرية السورية الجديدة والتصميم الزجاجي المبتكر (Glassmorphism).
+
+انتقالات حركية فائقة النعومة تضاهي تأثيرات Framer Motion باستخدام حركات CSS المخصصة.
+
+نظام تبديل شاشات ذكي وسريع (SPA Flow) بدون أي حاجة لإعادة تحميل الصفحة.
+
+لوحتي التحكم التفاعليتين بالكامل للمواطن والمسؤول الحكومي، مع إمكانية رفع الملفات ومحاكاة المحادثات وتغيير حالات الشكاوى فوراً.
+
+بصمة المطور الأنيقة by ABODY في التذييل.
+
+إليك الملف البرمجي الكامل والجاهز للتشغيل والتحرير:
+Shoofat Einak - Syria Complaints Platform
+18 يونيو، 7:07 م
+
+مميزات هذه البنية والملف الهيكلي:
+صفحة واحدة سريعة ومستقلة تماماً (Single File Web App): تم كتابة كل من هيكل الصفحة (HTML)، التنسيق الفخم المتلائم مع المظهر الزجاجي الرائع واللغة السورية الحديثة (CSS)، والتفاعلات البرمجية بالكامل (JavaScript) في ملف واحد.
+
+مظهر بلوري فاخر (Glassmorphism UI): مستوحى من أحدث صيحات تصميم واجهات المستخدم، مع استخدام توهجات وظلال تدمج ألوان الهوية السورية الجديدة (الأبيض، الأسود، الأخضر الزمردي، والأحمر المتوهج).
+
+توافق كامل مع الهواتف والأجهزة اللوحية: يتكيف التصميم بشكل ديناميكي مرن مع مختلف أحجام الشاشات.
+
+بصمة ABODY الأنيقة والراقية تبرز بجمالية متقنة في تذييل الصفحة.
+
+
+
+
+‫Gemini هو نموذج ذكاء اصطناعي وقد يعرض معلومات خاطئة، بما فيها تلك المتعلقة بالأشخاص. خصوصيتك وGeminiيفتح الرابط في نافذة جديدة.
+
+Shoofat Einak - Syria Complaints Platform
+
+
