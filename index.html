@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -15,8 +16,6 @@
                             red: '#E30613',
                             green: '#007A3D',
                             dark: '#060608',
-                            glass: 'rgba(255, 255, 255, 0.05)',
-                            border: 'rgba(255, 255, 255, 0.1)',
                         }
                     },
                     fontFamily: {
@@ -32,23 +31,34 @@
         /* أنماط مخصصة وحركات تحاكي Framer Motion واحترافية التصميم */
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: #060608;
             overflow-x: hidden;
         }
         
+        /* Glassmorphism Styles supporting Dark & Light Mode */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px border rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .dark .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         .glass-card-hover:hover {
+            transform: translateY(-2px);
+        }
+        .dark .glass-card-hover:hover {
             background: rgba(255, 255, 255, 0.06);
             border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(0, 0, 0, 0.1);
         }
 
         /* حركات الانتقال وتأثيرات الظهور الفائقة */
@@ -62,62 +72,55 @@
         }
 
         /* شريط التمرير الأنيق */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.5); border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.8); }
 
         /* توهج النيون الفاخر للهوية السورية */
-        .glow-red {
-            box-shadow: 0 0 25px rgba(227, 6, 19, 0.15);
-        }
-        .glow-green {
-            box-shadow: 0 0 25px rgba(0, 122, 61, 0.15);
-        }
+        .glow-red { box-shadow: 0 0 25px rgba(227, 6, 19, 0.15); }
+        .glow-green { box-shadow: 0 0 25px rgba(0, 122, 61, 0.15); }
     </style>
 </head>
-<body class="min-h-screen text-white flex flex-col justify-between relative antialiased selection:bg-[#E30613]/30 selection:text-white">
+<body class="min-h-screen bg-slate-50 dark:bg-syria-dark text-slate-900 dark:text-white flex flex-col justify-between relative antialiased selection:bg-[#E30613]/30 transition-colors duration-300">
 
     <!-- خلفيات الإضاءة التوهجية الساحرة -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#E30613]/10 rounded-full blur-[130px]"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#007A3D]/8 rounded-full blur-[150px]"></div>
-        <div class="absolute top-[35%] right-[15%] w-[250px] h-[250px] bg-white/2 rounded-full blur-[90px]"></div>
-        <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#E30613]/10 dark:bg-[#E30613]/10 rounded-full blur-[130px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#007A3D]/10 dark:bg-[#007A3D]/8 rounded-full blur-[150px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
     </div>
 
     <!-- ترويسة التطبيق (Header) -->
-    <header class="z-20 border-b border-white/5 bg-black/45 backdrop-blur-md sticky top-0 px-4 md:px-8 py-3.5 flex justify-between items-center">
+    <header class="z-20 border-b border-black/5 dark:border-white/5 bg-white/50 dark:bg-black/45 backdrop-blur-md sticky top-0 px-4 md:px-8 py-3.5 flex justify-between items-center transition-colors duration-300">
         <!-- شعار المنصة -->
         <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="navigateTo('landing')">
             <div class="relative">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#E30613] via-black to-[#007A3D] flex items-center justify-center shadow-lg border border-white/15">
-                    <span class="text-xl font-bold tracking-wider">ش</span>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#E30613] via-gray-800 dark:via-black to-[#007A3D] flex items-center justify-center shadow-lg border border-white/15">
+                    <span class="text-xl font-bold tracking-wider text-white">ش</span>
                 </div>
-                <div class="absolute -bottom-1 -left-1 w-3.5 h-3.5 bg-red-600 rounded-full border border-black flex items-center justify-center text-[7px] text-white font-bold">★</div>
-                <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-600 rounded-full border border-black flex items-center justify-center text-[7px] text-white font-bold">★</div>
+                <div class="absolute -bottom-1 -left-1 w-3.5 h-3.5 bg-red-600 rounded-full border border-white dark:border-black flex items-center justify-center text-[7px] text-white font-bold">★</div>
+                <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-600 rounded-full border border-white dark:border-black flex items-center justify-center text-[7px] text-white font-bold">★</div>
             </div>
             <div>
-                <h1 class="text-lg md:text-xl font-extrabold tracking-tight bg-gradient-to-l from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+                <h1 class="text-lg md:text-xl font-extrabold tracking-tight bg-gradient-to-l from-slate-900 via-slate-700 to-slate-500 dark:from-white dark:via-gray-200 dark:to-gray-400 bg-clip-text text-transparent">
                     شوفة عينك
                 </h1>
                 <p class="text-[9px] text-syria-green font-bold tracking-wider uppercase">المنصة الوطنية للشكاوى والمقترحات</p>
             </div>
         </div>
 
-        <!-- أزرار التحكم بالحساب والملاحة -->
-        <div id="nav-auth-section" class="flex items-center space-x-2 space-x-reverse">
-            <!-- سيتم توليد المحتوى ديناميكياً من خلال الجافا سكريبت -->
+        <div class="flex items-center space-x-4 space-x-reverse">
+            <!-- زر تبديل المظهر -->
+            <button onclick="toggleTheme()" class="p-2 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors" title="تبديل المظهر">
+                <span id="theme-icon-dark" class="block dark:hidden">🌙</span>
+                <span id="theme-icon-light" class="hidden dark:block">☀️</span>
+            </button>
+
+            <!-- أزرار التحكم بالحساب والملاحة -->
+            <div id="nav-auth-section" class="flex items-center space-x-2 space-x-reverse">
+                <!-- سيتم توليد المحتوى ديناميكياً من خلال الجافا سكريبت -->
+            </div>
         </div>
     </header>
 
@@ -126,40 +129,36 @@
 
         <!-- الشاشة 1: صفحة الهبوط الترحيبية -->
         <section id="view-landing" class="view-panel max-w-3xl mx-auto space-y-8 py-4 text-center animate-fade-in">
-            <div class="inline-flex items-center space-x-2 space-x-reverse bg-white/5 border border-white/10 rounded-full px-4 py-1.5 text-xs text-gray-300">
+            <div class="inline-flex items-center space-x-2 space-x-reverse bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full px-4 py-1.5 text-xs text-slate-700 dark:text-gray-300">
                 <span class="w-2.5 h-2.5 rounded-full bg-syria-green animate-pulse"></span>
                 <span>نظام وطني موحد للشفافية والتطوير والخدمة الفورية</span>
             </div>
 
             <h2 class="text-4xl md:text-6xl font-black tracking-tight leading-tight">
                 عين المواطن <br class="hidden md:block"/>
-                على <span class="bg-gradient-to-l from-[#007A3D] via-white to-[#E30613] bg-clip-text text-transparent">وطنٍ آمن وخَدَمي</span>
+                على <span class="bg-gradient-to-l from-[#007A3D] via-slate-800 dark:via-white to-[#E30613] bg-clip-text text-transparent">وطنٍ آمن وخَدَمي</span>
             </h2>
 
-            <p class="text-sm md:text-base text-gray-400 leading-relaxed max-w-xl mx-auto">
-                تطبيق <strong class="text-white font-semibold">"شوفة عينك"</strong> يمنحك الصلاحية الكاملة لتوثيق ومعالجة العقبات الخدمية والأمنية مباشرة مع الجهات المعنية السورية فوراً.
+            <p class="text-sm md:text-base text-slate-600 dark:text-gray-400 leading-relaxed max-w-xl mx-auto">
+                تطبيق <strong class="text-slate-900 dark:text-white font-semibold">"شوفة عينك"</strong> يمنحك الصلاحية الكاملة لتوثيق ومعالجة العقبات الخدمية والأمنية مباشرة مع الجهات المعنية السورية فوراً.
             </p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-xl mx-auto pt-4">
                 <div onclick="navigateTo('auth-citizen')" class="glass-card glass-card-hover p-6 rounded-2xl text-right cursor-pointer group">
                     <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition-transform">🇸🇾</div>
                     <h3 class="text-lg font-bold mb-1">حساب مواطن</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">سجل هويتك الرقمية، وثق الشكوى بالصور أو الفيديو، وتابع مستجدات الحل مباشرة مع ممثلي الجهات المعنية.</p>
+                    <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">سجل هويتك الرقمية، وثق الشكوى بالصور أو الفيديو، وتابع مستجدات الحل مباشرة مع ممثلي الجهات المعنية.</p>
                 </div>
 
                 <div onclick="navigateTo('auth-gov')" class="glass-card glass-card-hover p-6 rounded-2xl text-right cursor-pointer group">
                     <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition-transform">🏛️</div>
                     <h3 class="text-lg font-bold mb-1">الجهة الحكومية</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed">لوحة معالجة القرار المخصصة للوزارات، الأمن العام، البلديات، وإدارة المرور لمتابعة وتفنيد البلاغات.</p>
+                    <p class="text-xs text-slate-500 dark:text-gray-400 leading-relaxed">لوحة معالجة القرار المخصصة للوزارات، الأمن العام، البلديات، وإدارة المرور لمتابعة وتفنيد البلاغات.</p>
                 </div>
-            </div>
-
-            <div class="pt-8 border-t border-white/5 max-w-md mx-auto text-[10px] text-gray-500">
-                تحت إشراف الهيئة الوطنية لخدمات تقانة المعلومات وبأعلى معايير حماية البيانات الوطنية السورية.
             </div>
         </section>
 
-        <!-- الشاشة 2: بوابة دخول المواطن -->
+        <!-- الشاشة 2: بوابة دخول/تسجيل المواطن -->
         <section id="view-auth-citizen" class="view-panel hidden max-w-md mx-auto w-full animate-fade-in">
             <div class="glass-card rounded-3xl p-8 relative overflow-hidden glow-green">
                 <div class="absolute top-0 right-0 w-24 h-1 bg-gradient-to-l from-syria-green to-transparent"></div>
@@ -167,31 +166,58 @@
                 <div class="text-center mb-6">
                     <span class="text-3xl mb-2 inline-block">👤</span>
                     <h3 class="text-2xl font-bold">بوابة المواطن الرقمية</h3>
-                    <p class="text-xs text-gray-400 mt-1">التحقق والمطابقة بالاعتماد على شبكة حساب مواطن الموحد</p>
+                    <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">التحقق والمطابقة بالاعتماد على شبكة حساب مواطن الموحد</p>
                 </div>
 
-                <form onsubmit="loginAsCitizen(event)" class="space-y-4">
+                <!-- تبويبات الدخول والتسجيل -->
+                <div class="flex bg-black/5 dark:bg-black/40 rounded-xl p-1 mb-6">
+                    <button onclick="switchCitizenAuthTab('login')" id="tab-login" class="flex-1 text-sm font-bold py-2 rounded-lg bg-white dark:bg-white/10 shadow-sm transition-all text-syria-green">تسجيل الدخول</button>
+                    <button onclick="switchCitizenAuthTab('register')" id="tab-register" class="flex-1 text-sm font-bold py-2 rounded-lg text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-all">إنشاء حساب</button>
+                </div>
+
+                <!-- نموذج تسجيل الدخول -->
+                <form id="form-citizen-login" onsubmit="loginAsCitizen(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-2">الرقم الوطني السوري (11 رقم)</label>
-                        <input type="text" value="01030098721" required placeholder="0103XXXXXXXX" maxlength="11" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">الرقم الوطني السوري (11 رقم)</label>
+                        <input type="text" id="login-nid" required placeholder="0103XXXXXXXX" pattern="\d{11}" maxlength="11" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-2">رقم الهاتف المحمول المرتبط بالهوية</label>
-                        <input type="tel" value="0933111222" required placeholder="09XXXXXXXX" maxlength="10" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">كلمة المرور</label>
+                        <input type="password" id="login-pass" required placeholder="••••••••" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
                     </div>
-
-                    <div class="flex items-center space-x-2 space-x-reverse text-xs text-gray-400">
-                        <input type="checkbox" id="terms-citizen" checked required class="rounded bg-black border-white/10 text-syria-green focus:ring-0">
-                        <label for="terms-citizen">أوافق على صحة البيانات المرفقة وتحمّل المسؤولية القانونية للبلاغ.</label>
-                    </div>
-
                     <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:opacity-95 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-lg">
-                        تسجيل الدخول والتحقق الآمن
+                        دخول
                     </button>
                 </form>
 
-                <button onclick="navigateTo('landing')" class="w-full mt-4 text-center text-xs text-gray-400 hover:text-white transition-colors">
+                <!-- نموذج إنشاء حساب جديد -->
+                <form id="form-citizen-register" onsubmit="registerCitizen(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">الاسم الرباعي</label>
+                        <input type="text" id="reg-name" required placeholder="الاسم الكامل كما في الهوية" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">الرقم الوطني السوري</label>
+                        <input type="text" id="reg-nid" required placeholder="11 رقم وطني" pattern="\d{11}" maxlength="11" title="يرجى إدخال 11 رقم" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">رقم الهاتف (يبدأ بـ 09)</label>
+                        <input type="tel" id="reg-phone" required placeholder="09XXXXXXXX" pattern="^09\d{8}$" maxlength="10" title="يجب أن يبدأ بـ 09 ويتكون من 10 أرقام" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">كلمة المرور الجديدة</label>
+                        <input type="password" id="reg-pass" required minlength="6" placeholder="6 أحرف أو أرقام كحد أدنى" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
+                    </div>
+                    <div class="flex items-center space-x-2 space-x-reverse text-xs text-slate-500 dark:text-gray-400">
+                        <input type="checkbox" id="terms-citizen" required class="rounded border-black/10 dark:border-white/10 text-syria-green focus:ring-0">
+                        <label for="terms-citizen">أتعهد بصحة البيانات وتحمل المسؤولية القانونية للبلاغات.</label>
+                    </div>
+                    <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:opacity-95 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-lg">
+                        توثيق وإنشاء الحساب
+                    </button>
+                </form>
+
+                <button onclick="navigateTo('landing')" class="w-full mt-4 text-center text-xs text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors">
                     ◀ العودة للرئيسية
                 </button>
             </div>
@@ -205,30 +231,29 @@
                 <div class="text-center mb-6">
                     <span class="text-3xl mb-2 inline-block">🏛️</span>
                     <h3 class="text-2xl font-bold">بوابة الجهات الحكومية</h3>
-                    <p class="text-xs text-gray-400 mt-1">الولوج المشفر للمسؤولين وممثلي قطاعات الخدمة والأمن والشرطة</p>
+                    <p class="text-xs text-slate-500 dark:text-gray-400 mt-1">الولوج المشفر للمسؤولين وممثلي قطاعات الخدمة والأمن والشرطة</p>
                 </div>
 
                 <form onsubmit="loginAsGov(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-2">رمز الجهة الحكومية الموحد</label>
-                        <input type="text" value="SY-GOV-TRAFFIC" required placeholder="SY-GOV-XXXX" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-red focus:ring-1 focus:ring-syria-red transition-all outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">رمز الجهة الحكومية الموحد</label>
+                        <input type="text" id="gov-id" value="SY-GOV-TRAFFIC" required placeholder="SY-GOV-XXXX" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-red focus:ring-1 focus:ring-syria-red transition-all outline-none">
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-2">كلمة المرور الأمنية / رقم الشارة</label>
-                        <input type="password" value="123456" required placeholder="••••••••••••" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-red focus:ring-1 focus:ring-syria-red transition-all outline-none">
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-gray-300 mb-2">كلمة المرور الأمنية / رقم الشارة</label>
+                        <input type="password" id="gov-pass" value="123456" required placeholder="••••••••••••" class="w-full bg-white/50 dark:bg-black/40 border border-black/10 dark:border-white/10 rounded-xl px-4 py-3 text-sm focus:border-syria-red focus:ring-1 focus:ring-syria-red transition-all outline-none">
                     </div>
 
-                    <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-[11px] text-red-200">
+                    <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-3 text-[11px] text-red-700 dark:text-red-200">
                         ⚠️ تنبيه: هذه البوابة خاصة بالاستخدام الرسمي والمدراء المعتمدين وتخضع لكافة بنود الرقابة والأرشفة السيادية.
                     </div>
 
                     <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-red-600 to-syria-red hover:opacity-95 text-white font-bold rounded-xl text-sm transition-all duration-300 shadow-lg">
-                        دخول إلى مركز التحكم والرد المباشر
+                        دخول إلى مركز التحكم
                     </button>
                 </form>
 
-                <button onclick="navigateTo('landing')" class="w-full mt-4 text-center text-xs text-gray-400 hover:text-white transition-colors">
+                <button onclick="navigateTo('landing')" class="w-full mt-4 text-center text-xs text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-colors">
                     ◀ العودة للرئيسية
                 </button>
             </div>
@@ -239,65 +264,59 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                 <!-- العمود الأيمن: قائمة الشكاوى الخاصة بالمواطن -->
                 <div class="lg:col-span-4 glass-card rounded-2xl p-4 flex flex-col space-y-4">
-                    <div class="flex justify-between items-center pb-2 border-b border-white/5">
+                    <div class="flex justify-between items-center pb-2 border-b border-black/5 dark:border-white/5">
                         <div>
                           <h4 class="font-bold text-sm">بلاغاتك الموثقة</h4>
-                          <p id="citizen-complaints-count" class="text-[10px] text-gray-400">إجمالي الشكاوى: 0</p>
+                          <p id="citizen-complaints-count" class="text-[10px] text-slate-500 dark:text-gray-400">إجمالي الشكاوى: 0</p>
                         </div>
-                        <button onclick="openComplaintModal()" class="bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 space-x-reverse">
+                        <button onclick="openComplaintModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1 space-x-reverse">
                           <span>+</span>
                           <span>بلاغ جديد</span>
                         </button>
                     </div>
 
-                    <!-- قائمة بلاغات المواطن -->
-                    <div id="citizen-complaints-list" class="space-y-2 overflow-y-auto max-h-[50vh] lg:max-h-[60vh] pr-1">
-                        <!-- تملأ ديناميكياً بواسطة الجافا سكريبت -->
+                    <div id="citizen-complaints-list" class="space-y-2 overflow-y-auto h-[50vh] lg:h-[60vh] pr-1">
+                        <!-- تملأ ديناميكياً -->
                     </div>
                 </div>
 
                 <!-- العمود الأيسر: الشات والتفاصيل الكاملة للبلاغ -->
                 <div id="citizen-chat-window" class="lg:col-span-8 glass-card rounded-2xl flex flex-col overflow-hidden relative min-h-[520px]">
-                    <!-- تملأ ديناميكياً بواسطة الجافا سكريبت -->
+                    <!-- تملأ ديناميكياً -->
                 </div>
             </div>
         </section>
 
         <!-- الشاشة 5: لوحة تحكم المسؤول الحكومي (Government Dashboard) -->
         <section id="view-gov-dash" class="view-panel hidden space-y-6 animate-fade-in">
-            
-            <!-- لوحة الإحصائيات الذكية -->
+            <!-- لوحة الإحصائيات -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="p-4 rounded-xl glass-card text-right">
-                    <div class="text-[10px] text-gray-400 font-bold uppercase">إجمالي الشكاوى بالمستودع</div>
-                    <div id="gov-stats-total" class="text-2xl font-bold text-white mt-1">0 بلاغات</div>
-                    <div class="text-[9px] text-emerald-400 mt-1">▲ تحديث فوري فائق الدقة</div>
+                    <div class="text-[10px] text-slate-500 dark:text-gray-400 font-bold uppercase">إجمالي الشكاوى بالمستودع</div>
+                    <div id="gov-stats-total" class="text-2xl font-bold mt-1">0 بلاغات</div>
                 </div>
-                <div class="p-4 rounded-xl glass-card text-right">
-                    <div class="text-[10px] text-amber-400 font-bold uppercase">قيد التدقيق والبحث اليوم</div>
-                    <div id="gov-stats-reviewing" class="text-2xl font-bold text-amber-300 mt-1">0 شكاوى</div>
-                    <div class="text-[9px] text-gray-400 mt-1">تتطلب توجيه كوادر فورية</div>
+                <div class="p-4 rounded-xl glass-card text-right border-b-2 border-amber-400">
+                    <div class="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase">قيد التدقيق والبحث</div>
+                    <div id="gov-stats-reviewing" class="text-2xl font-bold text-amber-600 dark:text-amber-300 mt-1">0 شكاوى</div>
                 </div>
-                <div class="p-4 rounded-xl glass-card text-right">
-                    <div class="text-[10px] text-red-400 font-bold uppercase">بلاغات بانتظار المراجعة</div>
-                    <div id="gov-stats-pending" class="text-2xl font-bold text-red-500 mt-1">0 شكاوى</div>
-                    <div class="text-[9px] text-red-400 animate-pulse mt-1">⚠️ بلاغات جديدة لم تُعالج</div>
+                <div class="p-4 rounded-xl glass-card text-right border-b-2 border-red-500">
+                    <div class="text-[10px] text-red-600 dark:text-red-400 font-bold uppercase">بانتظار المراجعة</div>
+                    <div id="gov-stats-pending" class="text-2xl font-bold text-red-600 dark:text-red-500 mt-1">0 شكاوى</div>
                 </div>
-                <div class="p-4 rounded-xl glass-card text-right">
-                    <div class="text-[10px] text-emerald-400 font-bold uppercase">قضايا مغلقة ومحلولة</div>
-                    <div id="gov-stats-solved" class="text-2xl font-bold text-emerald-500 mt-1">0 بلاغ محلول</div>
-                    <div class="text-[9px] text-emerald-300 mt-1">معدل الإنجاز المالي والخدمي ممتاز</div>
+                <div class="p-4 rounded-xl glass-card text-right border-b-2 border-emerald-500">
+                    <div class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase">قضايا مغلقة ومحلولة</div>
+                    <div id="gov-stats-solved" class="text-2xl font-bold text-emerald-600 dark:text-emerald-500 mt-1">0 بلاغ محلول</div>
                 </div>
             </div>
 
             <!-- شريط الفرز والبحث المتقدم -->
             <div class="p-4 rounded-xl glass-card flex flex-col md:flex-row gap-4 justify-between items-center">
                 <div class="flex items-center space-x-2 space-x-reverse">
-                    <span class="text-xs font-bold text-gray-300">مصفاة الفرز للجهات والوزارات:</span>
+                    <span class="text-xs font-bold text-slate-700 dark:text-gray-300">مصفاة الفرز:</span>
                 </div>
                 
                 <div class="flex flex-wrap gap-2 w-full md:w-auto">
-                    <select id="gov-filter-entity" onchange="filterGovComplaints()" class="bg-black/40 text-xs border border-white/10 rounded-lg px-3 py-2 outline-none focus:border-syria-red text-white">
+                    <select id="gov-filter-entity" onchange="filterGovComplaints()" class="bg-white/50 dark:bg-black/40 text-xs border border-black/10 dark:border-white/10 rounded-lg px-3 py-2 outline-none focus:border-syria-red">
                         <option value="الكل">جميع الجهات الحكومية</option>
                         <option value="إدارة المرور">إدارة المرور 🚓</option>
                         <option value="وزارة الداخلية">وزارة الداخلية 🦅</option>
@@ -306,28 +325,27 @@
                         <option value="البلديات والخدمات">البلديات والخدمات 🏗️</option>
                     </select>
 
-                    <select id="gov-filter-status" onchange="filterGovComplaints()" class="bg-black/40 text-xs border border-white/10 rounded-lg px-3 py-2 outline-none focus:border-syria-red text-white">
+                    <select id="gov-filter-status" onchange="filterGovComplaints()" class="bg-white/50 dark:bg-black/40 text-xs border border-black/10 dark:border-white/10 rounded-lg px-3 py-2 outline-none focus:border-syria-red">
                         <option value="الكل">كل الحالات</option>
                         <option value="pending">بانتظار المراجعة</option>
-                        <option value="reviewing">قيد المعالجة والإرسال</option>
-                        <option value="solved">تم الحل بنجاح</option>
+                        <option value="reviewing">قيد المعالجة</option>
+                        <option value="solved">تم الحل</option>
                     </select>
                 </div>
             </div>
 
-            <!-- لوحة العرض المزدوجة للمسؤول الحكومي -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
                 <!-- قائمة البلاغات الواردة -->
                 <div class="lg:col-span-5 glass-card rounded-2xl p-4 space-y-4">
-                    <h3 class="font-bold text-sm border-b border-white/5 pb-2">جدول الشكاوى الواردة</h3>
-                    <div id="gov-complaints-list" class="space-y-2 overflow-y-auto max-h-[500px]">
-                        <!-- تملأ ديناميكياً بواسطة الجافا سكريبت -->
+                    <h3 class="font-bold text-sm border-b border-black/5 dark:border-white/5 pb-2">جدول الشكاوى الواردة</h3>
+                    <div id="gov-complaints-list" class="space-y-2 overflow-y-auto h-[500px] pr-1">
+                        <!-- تملأ ديناميكياً -->
                     </div>
                 </div>
 
-                <!-- شاشات الرد، تحديث الحالات، والمحادثة مع مقدم البلاغ -->
+                <!-- شاشة تفاصيل البلاغ والمحادثة -->
                 <div id="gov-chat-window" class="lg:col-span-7 glass-card rounded-2xl flex flex-col overflow-hidden relative min-h-[500px]">
-                    <!-- تملأ ديناميكياً بواسطة الجافا سكريبت -->
+                    <!-- تملأ ديناميكياً -->
                 </div>
             </div>
         </section>
@@ -335,7 +353,7 @@
     </main>
 
     <!-- المودال التفاعلي (Popup) لرفع شكوى وبلاغ جديد -->
-    <div id="complaint-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden animate-fade-in">
+    <div id="complaint-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm hidden animate-fade-in text-white">
         <div class="w-full max-w-lg rounded-2xl bg-[#0e0e11] border border-white/10 p-6 shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#007A3D] via-white to-[#E30613]"></div>
             
@@ -346,8 +364,8 @@
 
             <form onsubmit="submitNewComplaint(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">عنوان البلاغ (مختصر ويعبّر عن المشكلة)</label>
-                    <input type="text" id="new-complaint-title" required placeholder="مثال: حفرة عميقة تعيق سير المركبات في مشروع دمر" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-emerald-500 outline-none">
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">عنوان البلاغ</label>
+                    <input type="text" id="new-complaint-title" required placeholder="مثال: حفرة عميقة تعيق سير المركبات" class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-emerald-500 outline-none">
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -361,138 +379,132 @@
                             <option value="البلديات والخدمات" selected>البلديات والخدمات 🏗️</option>
                         </select>
                     </div>
-
                     <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">المرفق التوثيقي المباشر</label>
-                        <input type="file" id="new-complaint-file" accept="image/*,video/*" onchange="previewMediaFile(event)" class="hidden">
+                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">المرفق التوثيقي</label>
+                        <input type="file" id="new-complaint-file" accept="image/*" onchange="previewMediaFile(event)" class="hidden">
                         <label for="new-complaint-file" class="w-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors rounded-xl px-3 py-2.5 text-xs text-gray-300 cursor-pointer flex items-center justify-center space-x-2 space-x-reverse">
                             <span>📸</span>
-                            <span id="upload-label-text">رفع صورة / فيديو للبلاغ</span>
+                            <span id="upload-label-text">رفع صورة للبلاغ</span>
                         </label>
                     </div>
                 </div>
 
-                <!-- معاينة فورية للوسائط المدخلة -->
-                <div id="media-preview-container" class="hidden relative rounded-xl border border-white/10 overflow-hidden max-h-[140px] bg-black flex items-center justify-center">
-                    <!-- سيتم حقن المعاينة (صورة أو فيديو) هنا -->
+                <div id="media-preview-container" class="hidden relative rounded-xl border border-white/10 overflow-hidden h-[120px] bg-black flex items-center justify-center">
+                    <img id="media-preview-img" src="" class="h-full object-cover w-full opacity-80" />
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">الشرح التفصيلي للواقعة والمطالب</label>
-                    <textarea id="new-complaint-desc" rows="3" required placeholder="يرجى توضيح أدق التفاصيل الخاصة بالشكوى لنتمكن من التدقيق وإجراء الإلزام الفوري..." class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-emerald-500 outline-none resize-none"></textarea>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1.5">الشرح التفصيلي</label>
+                    <textarea id="new-complaint-desc" rows="3" required placeholder="يرجى توضيح أدق التفاصيل..." class="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-emerald-500 outline-none resize-none"></textarea>
                 </div>
 
                 <div class="bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-lg text-[10px] text-emerald-300 leading-relaxed">
-                    ✓ سيتم إرسال هذا البلاغ بشكل آمن وموثق برقمك الوطني. يرجى التأكد من مصداقية المعلومات المرفقة.
+                    ✓ سيتم إرسال هذا البلاغ بشكل آمن وموثق برقمك الوطني. يرجى التأكد من مصداقية المعلومات.
                 </div>
 
                 <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-700 hover:opacity-95 text-white font-bold rounded-xl text-xs transition-all duration-300 shadow-lg">
-                    إرسال البلاغ والمطالبة بالحل فوراً
+                    إرسال البلاغ
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- تذييل الصفحة الاحترافي (Footer) -->
-    <footer class="z-20 border-t border-white/5 bg-black/30 backdrop-blur-md py-6 text-center text-xs text-gray-400 mt-8 space-y-2">
+    <!-- نظام الإشعارات (Toast) المخصص -->
+    <div id="toast-container" class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- تذييل الصفحة -->
+    <footer class="z-20 border-t border-black/5 dark:border-white/5 bg-white/30 dark:bg-black/30 backdrop-blur-md py-6 text-center text-xs text-slate-500 dark:text-gray-400 mt-8 space-y-2 transition-colors duration-300">
         <div class="flex justify-center space-x-6 space-x-reverse text-[11px] flex-wrap gap-y-2">
-            <a href="#" class="hover:text-white transition-colors">عن المنصة</a>
-            <a href="#" class="hover:text-white transition-colors">دليل الاستخدام الخدمي</a>
-            <a href="#" class="hover:text-white transition-colors">سياسة الخصوصية السيادية</a>
-            <a href="#" class="hover:text-white transition-colors">الهيئة العامة لتقانة المعلومات</a>
+            <a href="#" class="hover:text-slate-900 dark:hover:text-white transition-colors">عن المنصة</a>
+            <a href="#" class="hover:text-slate-900 dark:hover:text-white transition-colors">دليل الاستخدام الخدمي</a>
+            <a href="#" class="hover:text-slate-900 dark:hover:text-white transition-colors">سياسة الخصوصية</a>
         </div>
-        <p class="text-[10px] text-gray-500">
+        <p class="text-[10px]">
             جميع الحقوق محفوظة © 2026 الجمهورية العربية السورية - المنظومة الوطنية الموحدة للشكاوى
         </p>
-        
-        <!-- بصمة المطور الفاخرة المدمجة بذكاء لجمالية استثنائية -->
-        <div class="pt-2">
-            <span class="text-[10px] font-mono tracking-widest text-[#E30613]/50 hover:text-[#007A3D] transition-colors duration-500 cursor-default">
-                designed & developed by <span class="text-white font-bold">ABODY</span>
-            </span>
-        </div>
     </footer>
 
-    <!-- المنطق البرمجي (JavaScript) لإدارة الحالة والتفاعلات بالكامل -->
+    <!-- المنطق البرمجي (JavaScript) -->
     <script>
-        // داتا الشكاوى المسبقة (Mockup Data) الغنية بالبيانات التفاعلية
+        // ---------------- State Management ----------------
+        let activeTab = 'landing';
+        let user = null; // null | { id, name, role: 'citizen'|'gov', entity? }
+        let selectedComplaintId = null;
+        let uploadedImageBase64 = null;
+
+        // قاعدة بيانات وهمية للمستخدمين
+        let usersDB = [
+            { id: "01030098721", name: "المواطن الافتراضي", phone: "0933111222", password: "password", role: "citizen" }
+        ];
+
+        // قاعدة بيانات وهمية للشكاوى
         let complaints = [
             {
                 id: "COMP-1042",
-                title: "مخالفة مرور وسرعة زائدة - أوتوستراد المزة",
+                title: "مخالفة مرور وسرعة زائدة - المزة",
                 description: "مركبة تسير بسرعة جنونية تفوق الحد المسموح به مما يعرض سلامة المشاة للخطر بالقرب من إشارة المرور والعبور.",
                 entity: "إدارة المرور",
-                status: "pending", // pending, reviewing, solved
+                status: "pending",
                 date: "2026-06-18 14:30",
-                citizenName: "سامر الأحمد",
+                citizenId: "01030098721",
+                citizenName: "المواطن الافتراضي",
                 media: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80",
-                mediaType: "image",
                 messages: [
-                    { id: 1, sender: "citizen", text: "أرجو تسيير دورية مراقبة للسرعة في هذه المنطقة خاصة في أوقات المساء لتفادي الحوادث.", time: "14:30" }
+                    { id: 1, sender: "citizen", text: "أرجو تسيير دورية مراقبة في هذه المنطقة.", time: "14:30" }
                 ]
             },
             {
                 id: "COMP-1043",
-                title: "تراكم أنقاض يعيق الحركة والطلاب - قدسيا البلد",
-                description: "وجود مخلفات بناء قديمة تسد جزءاً كبيراً من الطريق الفرعي المؤدي إلى المدرسة الابتدائية بالبلدة.",
+                title: "تراكم أنقاض يعيق الحركة - قدسيا",
+                description: "وجود مخلفات بناء قديمة تسد جزءاً كبيراً من الطريق الفرعي.",
                 entity: "البلديات والخدمات",
                 status: "reviewing",
                 date: "2026-06-17 09:15",
+                citizenId: "01030000000",
                 citizenName: "رنا الجلال",
                 media: "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=800&q=80",
-                mediaType: "image",
                 messages: [
-                    { id: 1, sender: "citizen", text: "الأطفال يضطرون للسير في منتصف الشارع الرئيسي بسبب إغلاق هذا الممر الجانبي.", time: "09:15" },
-                    { id: 2, sender: "gov", text: "مرحباً بكِ رنا، تم توجيه الشكوى إلى قطاع الخدمات في بلدية قدسيا وجاري المتابعة وسيتم إرسال جرافة لإزالة الأنقاض بالكامل خلال ساعات.", time: "11:20" }
-                ]
-            },
-            {
-                id: "COMP-1044",
-                title: "تلاعب صارخ بأسعار المواد الاستهلاكية",
-                description: "أحد المحلات التجارية يبيع المواد الغذائية الأساسية بأسعار تتجاوز النشرة الرسمية الصادرة عن الوزارة ويرفض إعطاء فواتير للمستهلكين.",
-                entity: "حماية المستهلك",
-                status: "solved",
-                date: "2026-06-15 11:00",
-                citizenName: "ماهر حموي",
-                media: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80",
-                mediaType: "image",
-                messages: [
-                    { id: 1, sender: "citizen", text: "تم تصوير التسعيرة المعلقة وتوثيق الفارق الكبير.", time: "11:00" },
-                    { id: 2, sender: "gov", text: "أهلاً بك سيد ماهر، قامت دورية من مديرية التجارة الداخلية وحماية المستهلك بزيارة المحل وتنظيم الضبط القانوني اللازم وإغلاقه احترازياً. شكراً لمساهمتك البنّاءة.", time: "15:45" },
-                    { id: 3, sender: "citizen", text: "جهودكم مشكورة جداً على الاستجابة السريعة والضرب بيد من حديد.", time: "16:00" }
+                    { id: 1, sender: "citizen", text: "الأطفال يضطرون للسير في منتصف الشارع.", time: "09:15" },
+                    { id: 2, sender: "gov", text: "تم التوجيه لقطاع الخدمات وجاري الإزالة.", time: "11:20" }
                 ]
             }
         ];
 
-        // المتغيرات العامة لإدارة الحالة (State Management)
-        let activeTab = 'landing';
-        let user = null;
-        let selectedComplaintId = complaints[0].id;
-        let mediaPreviewBase64 = '';
-        let mediaPreviewType = 'image';
-
-        // تهيئة التطبيق عند فتح الصفحة
+        // ---------------- Initialization ----------------
         window.onload = function() {
+            initTheme();
             navigateTo('landing');
-            renderAuthHeader();
         };
 
-        // التوجيه السلس والاحترافي بين الشاشات والنوافذ البلورية
+        // ---------------- Theme Toggle ----------------
+        function initTheme() {
+            const isDark = localStorage.getItem('theme') !== 'light';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleTheme() {
+            const htmlClass = document.documentElement.classList;
+            htmlClass.toggle('dark');
+            const isDark = htmlClass.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            showToast(isDark ? 'تم تفعيل الوضع الليلي' : 'تم تفعيل الوضع النهاري', 'info');
+        }
+
+        // ---------------- Navigation ----------------
         function navigateTo(targetTab) {
             activeTab = targetTab;
             
-            // إخفاء جميع اللوحات
             document.querySelectorAll('.view-panel').forEach(panel => {
                 panel.classList.add('hidden');
             });
             
-            // إظهار اللوحة النشطة فقط مع حركة أنيقة
             const activePanel = document.getElementById(`view-${targetTab}`);
-            if (activePanel) {
-                activePanel.classList.remove('hidden');
-            }
+            if (activePanel) activePanel.classList.remove('hidden');
 
-            // تنفيذ وظائف التحديث الخاصة بكل شاشة
             if (targetTab === 'citizen-dash') {
                 renderCitizenDashboard();
             } else if (targetTab === 'gov-dash') {
@@ -503,33 +515,32 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // بناء وعرض أزرار الهيدر والتحكم بحالة تسجيل الدخول
         function renderAuthHeader() {
             const navSection = document.getElementById('nav-auth-section');
             if (!user) {
                 navSection.innerHTML = `
                     <div class="flex space-x-2 space-x-reverse">
-                        <button onclick="navigateTo('auth-citizen')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+                        <button onclick="navigateTo('auth-citizen')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/10 transition-all">
                             بوابة المواطن
                         </button>
-                        <button onclick="navigateTo('auth-gov')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-[#E30613] to-red-700 hover:opacity-90 shadow-lg shadow-red-900/20 transition-all">
-                            البوابة الحكومية
+                        <button onclick="navigateTo('auth-gov')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-[#E30613] to-red-700 text-white hover:opacity-90 shadow-lg shadow-red-900/20 transition-all">
+                            بوابة الحكومة
                         </button>
                     </div>
                 `;
             } else {
                 navSection.innerHTML = `
-                    <div class="flex items-center space-x-3 space-x-reverse bg-white/5 border border-white/10 rounded-full py-1.5 px-4">
+                    <div class="flex items-center space-x-3 space-x-reverse bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-full py-1.5 px-4">
                         <div class="text-right hidden md:block">
-                            <div class="text-xs font-bold">${user.name}</div>
-                            <div class="text-[9px] text-gray-400">
+                            <div class="text-xs font-bold text-slate-800 dark:text-white">${user.name}</div>
+                            <div class="text-[9px] text-slate-500 dark:text-gray-400">
                                 ${user.role === 'gov' ? `جهة حكومية • ${user.entity}` : `حساب مواطن مفعّل`}
                             </div>
                         </div>
-                        <div class="w-8 h-8 rounded-full bg-[#E30613]/20 border border-[#E30613]/50 flex items-center justify-center text-xs font-bold text-white">
+                        <div class="w-8 h-8 rounded-full bg-[#E30613]/20 border border-[#E30613]/50 flex items-center justify-center text-xs font-bold text-slate-900 dark:text-white">
                             ${user.name[0]}
                         </div>
-                        <button onclick="logout()" class="text-gray-400 hover:text-red-500 transition-colors text-xs font-bold mr-2" title="تسجيل الخروج">
+                        <button onclick="logout()" class="text-slate-500 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-500 transition-colors text-xs font-bold mr-2" title="تسجيل الخروج">
                             ◀ خروج
                         </button>
                     </div>
@@ -537,558 +548,368 @@
             }
         }
 
-        // تسجيل دخول مواطن محاكي
-        function loginAsCitizen(e) {
+        // ---------------- Authentication ----------------
+        function switchCitizenAuthTab(tab) {
+            document.getElementById('form-citizen-login').classList.toggle('hidden', tab !== 'login');
+            document.getElementById('form-citizen-register').classList.toggle('hidden', tab !== 'register');
+            
+            const btnLogin = document.getElementById('tab-login');
+            const btnReg = document.getElementById('tab-register');
+            
+            if (tab === 'login') {
+                btnLogin.className = "flex-1 text-sm font-bold py-2 rounded-lg bg-white dark:bg-white/10 shadow-sm transition-all text-syria-green";
+                btnReg.className = "flex-1 text-sm font-bold py-2 rounded-lg text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-all";
+            } else {
+                btnReg.className = "flex-1 text-sm font-bold py-2 rounded-lg bg-white dark:bg-white/10 shadow-sm transition-all text-syria-green";
+                btnLogin.className = "flex-1 text-sm font-bold py-2 rounded-lg text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white transition-all";
+            }
+        }
+
+        function registerCitizen(e) {
             e.preventDefault();
-            user = {
-                name: "مجد حمود",
-                role: "citizen",
-                id: "CIT-9921",
-                nationalId: "01030098721"
-            };
+            const name = document.getElementById('reg-name').value;
+            const nid = document.getElementById('reg-nid').value;
+            const phone = document.getElementById('reg-phone').value;
+            const pass = document.getElementById('reg-pass').value;
+
+            // التأكد من أن الرقم الوطني غير مسجل مسبقاً
+            if (usersDB.find(u => u.id === nid)) {
+                showToast('الرقم الوطني مسجل مسبقاً، يرجى تسجيل الدخول.', 'error');
+                return;
+            }
+
+            const newUser = { id: nid, name, phone, password: pass, role: 'citizen' };
+            usersDB.push(newUser);
+            user = newUser;
+            
+            showToast('تم إنشاء الحساب بنجاح وتوثيق الهوية الرقمية', 'success');
+            document.getElementById('form-citizen-register').reset();
             navigateTo('citizen-dash');
         }
 
-        // تسجيل دخول جهة حكومية محاكاة
+        function loginAsCitizen(e) {
+            e.preventDefault();
+            const nid = document.getElementById('login-nid').value;
+            const pass = document.getElementById('login-pass').value;
+
+            // افتراضياً لسهولة التجربة يمكن الدخول بأي حساب غير موجود وسيقوم بإنشائه وهمياً
+            const foundUser = usersDB.find(u => u.id === nid && u.password === pass);
+            
+            if (foundUser) {
+                user = foundUser;
+                showToast(`أهلاً بك مجدداً ${user.name}`, 'success');
+                navigateTo('citizen-dash');
+            } else {
+                showToast('بيانات الدخول غير صحيحة، أو الحساب غير موجود.', 'error');
+            }
+        }
+
         function loginAsGov(e) {
             e.preventDefault();
-            user = {
-                name: "العقيد عماد سليمان",
-                role: "gov",
-                entity: "إدارة المرور",
-                badge: "GOV-770"
-            };
+            const id = document.getElementById('gov-id').value;
+            // محاكاة تسجيل دخول جهة حكومية
+            user = { id: id, name: "مسؤول القطاع المعتمد", role: 'gov', entity: "الإدارة العامة" };
+            showToast('تم التحقق بنجاح، أهلاً بك في منصة التحكم الحكومية', 'success');
             navigateTo('gov-dash');
         }
 
-        // تسجيل الخروج وإعادة تعيين الجلسة
         function logout() {
             user = null;
+            selectedComplaintId = null;
             navigateTo('landing');
+            showToast('تم تسجيل الخروج بأمان', 'info');
         }
 
-        /* -------------------------------------------
-           منطق وإدارة لوحة تحكم المواطن (Citizen Dashboard)
-           ------------------------------------------- */
+        // ---------------- Citizen Dashboard ----------------
         function renderCitizenDashboard() {
-            // تحديث عدد الشكاوى الإجمالي
-            document.getElementById('citizen-complaints-count').innerText = `إجمالي الشكاوى: ${complaints.length}`;
+            const userComplaints = complaints.filter(c => c.citizenId === user.id);
+            document.getElementById('citizen-complaints-count').innerText = `إجمالي الشكاوى: ${userComplaints.length}`;
             
-            // حقن قائمة الشكاوى
-            const listContainer = document.getElementById('citizen-complaints-list');
-            listContainer.innerHTML = '';
+            const listEl = document.getElementById('citizen-complaints-list');
+            listEl.innerHTML = '';
 
-            complaints.forEach(comp => {
-                const isSelected = comp.id === selectedComplaintId;
-                
-                let statusBadge = '';
-                if (comp.status === 'pending') {
-                    statusBadge = `<span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-red-500/20 text-red-300 border border-red-500/40 animate-pulse">قيد المراجعة</span>`;
-                } else if (comp.status === 'reviewing') {
-                    statusBadge = `<span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">جاري المعالجة</span>`;
-                } else {
-                    statusBadge = `<span class="text-[9px] px-2 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">تم الحل بنجاح</span>`;
-                }
+            if (userComplaints.length === 0) {
+                listEl.innerHTML = `<div class="text-center p-6 text-sm text-slate-500 dark:text-gray-400">لا يوجد بلاغات مسجلة حالياً</div>`;
+                document.getElementById('citizen-chat-window').innerHTML = `
+                    <div class="flex-grow flex flex-col items-center justify-center text-slate-500 dark:text-gray-500">
+                        <div class="text-4xl mb-4 opacity-50">📂</div>
+                        <p>اختر بلاغاً لعرض التفاصيل أو قم بإضافة بلاغ جديد.</p>
+                    </div>`;
+                return;
+            }
 
-                listContainer.innerHTML += `
-                    <div onclick="selectComplaint('${comp.id}')" class="p-3 rounded-xl cursor-pointer border transition-all text-right ${
-                        isSelected 
-                            ? 'bg-white/10 border-emerald-500/50 shadow-md' 
-                            : 'bg-white/5 border-transparent hover:bg-white/8'
-                    }">
-                        <div class="flex justify-between items-start mb-1.5">
-                            <span class="text-[9px] bg-white/10 px-2 py-0.5 rounded text-gray-300 font-mono">#${comp.id}</span>
-                            ${statusBadge}
-                        </div>
-                        <h5 class="font-bold text-xs truncate text-gray-100">${comp.title}</h5>
-                        <div class="flex justify-between items-center mt-2 pt-2 border-t border-white/5 text-[9px] text-gray-400">
-                            <span>الجهة: ${comp.entity}</span>
-                            <span>${comp.date}</span>
-                        </div>
+            userComplaints.forEach(c => {
+                const el = document.createElement('div');
+                el.className = `p-3 rounded-xl cursor-pointer border transition-all ${selectedComplaintId === c.id ? 'bg-syria-green/10 border-syria-green' : 'bg-black/5 dark:bg-white/5 border-transparent hover:bg-black/10 dark:hover:bg-white/10'}`;
+                el.onclick = () => { selectedComplaintId = c.id; renderCitizenDashboard(); };
+                el.innerHTML = `
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-xs font-bold truncate">${c.title}</span>
+                        ${getStatusBadge(c.status)}
+                    </div>
+                    <div class="flex justify-between text-[10px] text-slate-500 dark:text-gray-400">
+                        <span>${c.entity}</span>
+                        <span>${c.date.split(' ')[0]}</span>
                     </div>
                 `;
+                listEl.appendChild(el);
             });
 
-            renderCitizenChatWindow();
+            if (!selectedComplaintId) selectedComplaintId = userComplaints[0].id;
+            renderChatWindow('citizen-chat-window');
         }
 
-        // اختيار شكوى محددة وعرضها
-        function selectComplaint(id) {
-            selectedComplaintId = id;
-            if (activeTab === 'citizen-dash') {
-                renderCitizenDashboard();
-            } else if (activeTab === 'gov-dash') {
+        // ---------------- Gov Dashboard ----------------
+        function renderGovDashboard() {
+            const entityFilter = document.getElementById('gov-filter-entity').value;
+            const statusFilter = document.getElementById('gov-filter-status').value;
+
+            let filtered = complaints;
+            if (entityFilter !== 'الكل') filtered = filtered.filter(c => c.entity === entityFilter);
+            if (statusFilter !== 'الكل') filtered = filtered.filter(c => c.status === statusFilter);
+
+            // Update Stats
+            document.getElementById('gov-stats-total').innerText = `${complaints.length} بلاغات`;
+            document.getElementById('gov-stats-reviewing').innerText = `${complaints.filter(c => c.status === 'reviewing').length} شكاوى`;
+            document.getElementById('gov-stats-pending').innerText = `${complaints.filter(c => c.status === 'pending').length} شكاوى`;
+            document.getElementById('gov-stats-solved').innerText = `${complaints.filter(c => c.status === 'solved').length} بلاغ محلول`;
+
+            const listEl = document.getElementById('gov-complaints-list');
+            listEl.innerHTML = '';
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<div class="text-center p-6 text-sm text-slate-500 dark:text-gray-400">لا توجد نتائج مطابقة.</div>`;
+                document.getElementById('gov-chat-window').innerHTML = '';
+                return;
+            }
+
+            filtered.forEach(c => {
+                const el = document.createElement('div');
+                el.className = `p-3 rounded-xl cursor-pointer border transition-all ${selectedComplaintId === c.id ? 'bg-syria-red/10 border-syria-red' : 'bg-black/5 dark:bg-white/5 border-transparent hover:bg-black/10 dark:hover:bg-white/10'}`;
+                el.onclick = () => { selectedComplaintId = c.id; renderGovDashboard(); };
+                el.innerHTML = `
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-xs font-bold truncate">${c.title}</span>
+                        ${getStatusBadge(c.status)}
+                    </div>
+                    <div class="text-[10px] text-slate-500 dark:text-gray-400 mb-1">المواطن: ${c.citizenName} (${c.citizenId})</div>
+                    <div class="flex justify-between text-[10px] text-slate-500 dark:text-gray-400">
+                        <span class="text-syria-red">${c.entity}</span>
+                        <span>${c.date}</span>
+                    </div>
+                `;
+                listEl.appendChild(el);
+            });
+
+            if (!selectedComplaintId || !filtered.find(c=>c.id === selectedComplaintId)) {
+                selectedComplaintId = filtered[0].id;
+            }
+            renderChatWindow('gov-chat-window');
+        }
+
+        function filterGovComplaints() {
+            selectedComplaintId = null; // Reset selection on filter
+            renderGovDashboard();
+        }
+
+        // ---------------- Chat & Details Window ----------------
+        function renderChatWindow(containerId) {
+            const container = document.getElementById(containerId);
+            const comp = complaints.find(c => c.id === selectedComplaintId);
+            
+            if (!comp) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const isGov = user.role === 'gov';
+            const themeColor = isGov ? 'red' : 'emerald';
+
+            let statusControls = '';
+            if (isGov) {
+                statusControls = `
+                    <div class="flex space-x-2 space-x-reverse items-center bg-black/5 dark:bg-white/5 rounded-lg p-2">
+                        <span class="text-xs font-bold text-slate-600 dark:text-gray-300">تحديث الحالة:</span>
+                        <select onchange="updateComplaintStatus('${comp.id}', this.value)" class="bg-white dark:bg-black text-xs border border-black/10 dark:border-white/10 rounded px-2 py-1 outline-none text-slate-900 dark:text-white">
+                            <option value="pending" ${comp.status==='pending'?'selected':''}>قيد الانتظار</option>
+                            <option value="reviewing" ${comp.status==='reviewing'?'selected':''}>قيد المعالجة</option>
+                            <option value="solved" ${comp.status==='solved'?'selected':''}>محلول ومغلق</option>
+                        </select>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <!-- Chat Header -->
+                <div class="p-4 border-b border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 flex justify-between items-start">
+                    <div>
+                        <h3 class="font-bold text-sm md:text-base">${comp.title}</h3>
+                        <p class="text-[10px] text-slate-500 dark:text-gray-400 mt-1">رقم الوثيقة: ${comp.id} | التاريخ: ${comp.date}</p>
+                    </div>
+                    ${statusControls || getStatusBadge(comp.status)}
+                </div>
+
+                <!-- Chat Body -->
+                <div class="flex-grow p-4 overflow-y-auto space-y-4 bg-slate-50 dark:bg-transparent" id="${containerId}-messages">
+                    <!-- وصف المشكلة الأساسي -->
+                    <div class="bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl p-3 text-xs leading-relaxed">
+                        <p class="font-bold mb-2 text-syria-${themeColor}">شرح البلاغ:</p>
+                        <p class="text-slate-700 dark:text-gray-300">${comp.description}</p>
+                        ${comp.media ? `<img src="${comp.media}" class="mt-3 max-h-40 rounded-lg object-cover w-full border border-black/10 dark:border-white/10" alt="مرفق البلاغ"/>` : ''}
+                    </div>
+                    
+                    ${comp.messages.map(m => `
+                        <div class="flex flex-col ${m.sender === user.role ? 'items-end' : 'items-start'}">
+                            <div class="max-w-[80%] rounded-xl p-3 text-xs ${m.sender === 'citizen' ? 'bg-emerald-600/20 text-emerald-900 dark:text-emerald-100 rounded-tr-none' : 'bg-red-600/20 text-red-900 dark:text-red-100 rounded-tl-none'}">
+                                ${m.text}
+                            </div>
+                            <span class="text-[9px] text-slate-500 dark:text-gray-500 mt-1">${m.time}</span>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- Chat Input -->
+                <div class="p-3 border-t border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5">
+                    <form onsubmit="sendMessage(event, '${comp.id}')" class="flex items-center space-x-2 space-x-reverse">
+                        <input type="text" id="${containerId}-input" required placeholder="اكتب ردك أو تعليقك هنا..." class="flex-grow bg-white dark:bg-black border border-black/10 dark:border-white/10 rounded-xl px-4 py-2.5 text-xs focus:border-syria-${themeColor} outline-none text-slate-900 dark:text-white" ${comp.status === 'solved' && user.role === 'citizen' ? 'disabled placeholder="البلاغ مغلق."' : ''}>
+                        <button type="submit" class="bg-${themeColor}-600 hover:bg-${themeColor}-500 text-white p-2.5 rounded-xl transition-colors" ${comp.status === 'solved' && user.role === 'citizen' ? 'disabled' : ''}>
+                            إرسال
+                        </button>
+                    </form>
+                </div>
+            `;
+            
+            // Auto scroll to bottom
+            const msgList = document.getElementById(`${containerId}-messages`);
+            msgList.scrollTop = msgList.scrollHeight;
+        }
+
+        // ---------------- Actions ----------------
+        function sendMessage(e, compId) {
+            e.preventDefault();
+            const inputEl = document.getElementById(`${user.role === 'gov' ? 'gov' : 'citizen'}-chat-window-input`);
+            const text = inputEl.value;
+            const comp = complaints.find(c => c.id === compId);
+            
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+            comp.messages.push({
+                id: Date.now(),
+                sender: user.role,
+                text: text,
+                time: timeStr
+            });
+
+            inputEl.value = '';
+            
+            if(user.role === 'gov') renderGovDashboard();
+            else renderCitizenDashboard();
+        }
+
+        function updateComplaintStatus(compId, newStatus) {
+            const comp = complaints.find(c => c.id === compId);
+            if (comp) {
+                comp.status = newStatus;
+                showToast('تم تحديث حالة البلاغ بنجاح', 'success');
                 renderGovDashboard();
             }
         }
 
-        // بناء شباك الشات والتفاصيل للبلاغ المختار (للمواطن)
-        function renderCitizenChatWindow() {
-            const container = document.getElementById('citizen-chat-window');
-            const comp = complaints.find(c => c.id === selectedComplaintId) || complaints[0];
-
-            if (!comp) {
-                container.innerHTML = `<div class="flex items-center justify-center h-full text-xs text-gray-400">لا توجد بلاغات حالية</div>`;
-                return;
-            }
-
-            let statusText = '';
-            let statusClass = '';
-            if (comp.status === 'pending') {
-                statusText = 'قيد المراجعة الفورية';
-                statusClass = 'bg-red-500/20 text-red-300';
-            } else if (comp.status === 'reviewing') {
-                statusText = 'تحت الإجراء والبحث';
-                statusClass = 'bg-amber-500/20 text-amber-300';
-            } else {
-                statusText = 'محلول ومنتهي';
-                statusClass = 'bg-emerald-500/20 text-emerald-300';
-            }
-
-            // بناء المرفق بناء على كونه فيديو أو صورة
-            let mediaHtml = '';
-            if (comp.mediaType === 'video') {
-                mediaHtml = `<video src="${comp.media}" controls class="w-full h-full object-cover rounded-lg"></video>`;
-            } else {
-                mediaHtml = `<img src="${comp.media}" alt="مرفق الشكوى" class="w-full h-full object-cover rounded-lg">`;
-            }
-
-            // رسائل المحادثة
-            let messagesHtml = '';
-            comp.messages.forEach(msg => {
-                const isCitizen = msg.sender === 'citizen';
-                messagesHtml += `
-                    <div class="flex ${isCitizen ? 'justify-start' : 'justify-end'} animate-fade-in">
-                        <div class="max-w-[80%] rounded-2xl p-3 ${
-                            isCitizen 
-                                ? 'bg-gradient-to-br from-emerald-600/30 to-emerald-800/20 border border-emerald-500/20 rounded-tr-none text-right' 
-                                : 'bg-gradient-to-br from-[#E30613]/20 to-red-950/20 border border-red-500/20 rounded-tl-none text-right'
-                        }">
-                            <div class="flex items-center justify-between space-x-4 space-x-reverse mb-1">
-                                <span class="text-[10px] font-bold text-gray-300">
-                                    ${isCitizen ? 'أنت (المواطن)' : comp.entity}
-                                </span>
-                                <span class="text-[8px] text-gray-400">${msg.time}</span>
-                            </div>
-                            <p class="text-xs text-gray-200 leading-relaxed">${msg.text}</p>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = `
-                <!-- ترويسة تفاصيل الشكوى -->
-                <div class="p-4 bg-white/5 border-b border-white/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
-                    <div>
-                        <div class="flex items-center space-x-2 space-x-reverse">
-                            <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full font-bold">
-                                ${comp.entity}
-                            </span>
-                            <span class="text-xs text-gray-400 font-mono">ID: ${comp.id}</span>
-                        </div>
-                        <h3 class="font-extrabold text-sm md:text-base mt-1 text-white">${comp.title}</h3>
-                    </div>
-
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                        <span class="text-xs text-gray-400">حالة البلاغ:</span>
-                        <span class="text-xs px-3 py-1 rounded-full font-bold ${statusClass}">${statusText}</span>
-                    </div>
-                </div>
-
-                <!-- الجسم: المرفقات والمحادثات -->
-                <div class="flex-grow p-4 overflow-y-auto space-y-4 max-h-[350px]">
-                    
-                    <!-- البطاقة المرفقة الفاخرة للوسائط -->
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
-                        <div class="md:col-span-4 relative group overflow-hidden rounded-lg bg-black flex items-center justify-center min-h-[140px] border border-white/10">
-                            ${mediaHtml}
-                            <div class="absolute bottom-2 right-2 bg-black/60 backdrop-blur-md text-[9px] px-2 py-0.5 rounded">📁 مرفق إثباتي</div>
-                        </div>
-                        
-                        <div class="md:col-span-8 flex flex-col justify-between">
-                            <div>
-                                <h4 class="text-xs font-bold text-gray-300 mb-1">وصف الواقعة والشرح:</h4>
-                                <p class="text-xs text-gray-300 leading-relaxed bg-black/30 p-3 rounded-lg border border-white/5">
-                                    ${comp.description}
-                                </p>
-                            </div>
-                            <div class="text-[9px] text-gray-500 mt-2 flex justify-between">
-                                <span>تاريخ التقديم: ${comp.date}</span>
-                                <span>مقدم البلاغ: ${comp.citizenName}</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- شريط المحادثات المشفّرة -->
-                    <div class="space-y-3 pt-2">
-                        <div class="text-center">
-                            <span class="text-[9px] bg-white/5 text-gray-400 px-3 py-1 rounded-full border border-white/5">
-                                قناة اتصال مشفرة ومؤمنة بين المواطن والجهة المعنية مباشرة
-                            </span>
-                        </div>
-                        ${messagesHtml}
-                        <div id="chat-end-anchor"></div>
-                    </div>
-                </div>
-
-                <!-- شريط المدخلات لإرسال رسالة -->
-                <form onsubmit="sendChatInput(event, 'citizen')" class="p-3 bg-black/40 border-t border-white/10 flex items-center space-x-2 space-x-reverse">
-                    <input type="text" id="chat-text-input" required placeholder="أرسل استفساراً أو تفاصيل توضيحية للجهة المختصة..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:border-syria-green focus:ring-1 focus:ring-syria-green transition-all outline-none">
-                    <button type="submit" class="bg-syria-green hover:bg-emerald-600 text-white px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0">إرسال</button>
-                </form>
-            `;
-
-            // التمرير التلقائي لأسفل المحادثة
-            setTimeout(() => {
-                const anchor = document.getElementById('chat-end-anchor');
-                if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        /* -------------------------------------------
-           منطق لوحة تحكم الجهة الحكومية والمسؤول (Gov Dashboard)
-           ------------------------------------------- */
-        function renderGovDashboard() {
-            // فلترة الشكاوى حسب المدخلات المحددة
-            const filterEntity = document.getElementById('gov-filter-entity').value;
-            const filterStatus = document.getElementById('gov-filter-status').value;
-
-            // حساب الإحصائيات
-            document.getElementById('gov-stats-total').innerText = `${complaints.length} بلاغات`;
-            document.getElementById('gov-stats-reviewing').innerText = `${complaints.filter(c => c.status === 'reviewing').length} شكاوى`;
-            document.getElementById('gov-stats-pending').innerText = `${complaints.filter(c => c.status === 'pending').length} شكاوى`;
-            document.getElementById('gov-stats-solved').innerText = `${complaints.filter(c => c.status === 'solved').length} محلولة`;
-
-            const listContainer = document.getElementById('gov-complaints-list');
-            listContainer.innerHTML = '';
-
-            const filteredComplaints = complaints
-                .filter(c => filterEntity === 'الكل' || c.entity === filterEntity)
-                .filter(c => filterStatus === 'الكل' || c.status === filterStatus);
-
-            if (filteredComplaints.length === 0) {
-                listContainer.innerHTML = `<div class="p-4 text-center text-xs text-gray-400">لا توجد بلاغات تطابق شروط التصفية والفرز</div>`;
-            }
-
-            filteredComplaints.forEach(comp => {
-                const isSelected = comp.id === selectedComplaintId;
-                
-                let statusBadge = '';
-                if (comp.status === 'pending') {
-                    statusBadge = `<span class="text-[9px] bg-red-500/20 text-red-300 px-2 py-0.5 rounded font-mono border border-red-500/30">بانتظار المراجعة</span>`;
-                } else if (comp.status === 'reviewing') {
-                    statusBadge = `<span class="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-mono border border-amber-500/30">قيد المعالجة</span>`;
-                } else {
-                    statusBadge = `<span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono border border-emerald-500/30">محلول</span>`;
-                }
-
-                listContainer.innerHTML += `
-                    <div onclick="selectComplaint('${comp.id}')" class="p-3 rounded-xl cursor-pointer border transition-all text-right ${
-                        isSelected 
-                            ? 'bg-white/10 border-red-500/50 shadow-md' 
-                            : 'bg-white/5 border-transparent hover:bg-white/8'
-                    }">
-                        <div class="flex justify-between items-start mb-1.5">
-                            <span class="text-[10px] bg-red-500/10 text-red-300 px-2 py-0.5 rounded font-mono">#${comp.id}</span>
-                            ${statusBadge}
-                        </div>
-                        <h4 class="font-bold text-xs truncate text-gray-100">${comp.title}</h4>
-                        <p class="text-[10px] text-gray-400 mt-1 line-clamp-1">${comp.description}</p>
-                        
-                        <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/5 text-[9px] text-gray-500">
-                            <span>الجهة: ${comp.entity}</span>
-                            <span>المواطن: ${comp.citizenName}</span>
-                        </div>
-                    </div>
-                `;
-            });
-
-            renderGovChatWindow();
-        }
-
-        // فلترة الشكاوى وإعادة رسم القائمة
-        function filterGovComplaints() {
-            renderGovDashboard();
-        }
-
-        // بناء لوحة شات الإدارة وتحديث الحالة
-        function renderGovChatWindow() {
-            const container = document.getElementById('gov-chat-window');
-            const comp = complaints.find(c => c.id === selectedComplaintId) || complaints[0];
-
-            if (!comp) {
-                container.innerHTML = `<div class="flex items-center justify-center h-full text-xs text-gray-400">الرجاء اختيار شكوى من السجل لعرضها</div>`;
-                return;
-            }
-
-            // بناء المرفق
-            let mediaHtml = '';
-            if (comp.mediaType === 'video') {
-                mediaHtml = `<video src="${comp.media}" controls class="w-full h-full object-cover rounded-lg"></video>`;
-            } else {
-                mediaHtml = `<img src="${comp.media}" alt="دليل البلاغ" class="w-full h-full object-cover rounded-lg">`;
-            }
-
-            // بناء المحادثة
-            let messagesHtml = '';
-            comp.messages.forEach(msg => {
-                const isGov = msg.sender === 'gov';
-                messagesHtml += `
-                    <div class="flex ${isGov ? 'justify-start' : 'justify-end'} animate-fade-in">
-                        <div class="max-w-[80%] rounded-2xl p-3 ${
-                            isGov 
-                                ? 'bg-gradient-to-br from-red-600/30 to-red-800/20 border border-red-500/20 rounded-tr-none text-right' 
-                                : 'bg-gradient-to-br from-emerald-600/20 to-emerald-800/20 border border-emerald-500/20 rounded-tl-none text-right'
-                        }">
-                            <div class="flex items-center justify-between space-x-4 space-x-reverse mb-1">
-                                <span class="text-[10px] font-bold text-gray-300">
-                                    ${isGov ? `${comp.entity} (أنت)` : `المواطن (${comp.citizenName})`}
-                                </span>
-                                <span class="text-[8px] text-gray-400">${msg.time}</span>
-                            </div>
-                            <p class="text-xs text-gray-200 leading-relaxed">${msg.text}</p>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = `
-                <!-- ترويسة البلاغ الفعال -->
-                <div class="p-4 bg-white/5 border-b border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                    <div>
-                        <span class="text-xs text-red-400 font-mono">شكوى تحت الإجراء الفيدرالي الحكومي</span>
-                        <h3 class="font-bold text-sm md:text-base mt-0.5 text-white">${comp.title}</h3>
-                    </div>
-
-                    <!-- تحكم تغيير الحالة الفوري -->
-                    <div class="flex items-center space-x-2 space-x-reverse bg-black/40 p-1 rounded-lg border border-white/10">
-                        <button onclick="updateComplaintStatus('${comp.id}', 'pending')" class="text-[10px] font-bold px-2.5 py-1 rounded transition-all ${
-                            comp.status === 'pending' ? 'bg-red-600 text-white shadow' : 'text-gray-400 hover:text-white'
-                        }">انتظار</button>
-                        <button onclick="updateComplaintStatus('${comp.id}', 'reviewing')" class="text-[10px] font-bold px-2.5 py-1 rounded transition-all ${
-                            comp.status === 'reviewing' ? 'bg-amber-600 text-white shadow' : 'text-gray-400 hover:text-white'
-                        }">معالجة</button>
-                        <button onclick="updateComplaintStatus('${comp.id}', 'solved')" class="text-[10px] font-bold px-2.5 py-1 rounded transition-all ${
-                            comp.status === 'solved' ? 'bg-emerald-600 text-white shadow' : 'text-gray-400 hover:text-white'
-                        }">حل</button>
-                    </div>
-                </div>
-
-                <!-- جسم العرض والشات -->
-                <div class="flex-grow p-4 overflow-y-auto space-y-4 max-h-[350px]">
-                    
-                    <!-- البطاقة المرفقة الفاخرة للوسائط -->
-                    <div class="bg-black/30 p-4 rounded-xl border border-white/5 space-y-3">
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <div class="sm:w-1/3 aspect-video sm:aspect-square relative overflow-hidden rounded-lg bg-black flex items-center justify-center border border-white/10">
-                                ${mediaHtml}
-                            </div>
-                            <div class="sm:w-2/3 flex flex-col justify-between">
-                                <div>
-                                    <div class="text-[10px] text-gray-400 font-bold">وصف وموقع الخلل من قبل المواطن:</div>
-                                    <p class="text-xs text-gray-200 leading-relaxed mt-1">${comp.description}</p>
-                                </div>
-                                <div class="text-[9px] text-gray-500 mt-2">
-                                    تاريخ البلاغ: ${comp.date} | مقدم الطلب: ${comp.citizenName}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- سجل المراسلات -->
-                    <div class="space-y-3">
-                        ${messagesHtml}
-                        <div id="chat-end-anchor-gov"></div>
-                    </div>
-                </div>
-
-                <!-- حقل إرسال توجيه رسمي ومباشر -->
-                <form onsubmit="sendChatInput(event, 'gov')" class="p-3 bg-black/40 border-t border-white/10 flex items-center space-x-2 space-x-reverse">
-                    <input type="text" id="chat-text-input-gov" required placeholder="اكتب توجيهاً رسمياً أو رداً مباشراً للمواطن..." class="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white focus:border-syria-red focus:ring-1 focus:ring-syria-red transition-all outline-none">
-                    <button type="submit" class="bg-syria-red hover:bg-red-600 text-white px-5 py-3 rounded-xl text-xs font-bold transition-all shrink-0">إرسال الرد</button>
-                </form>
-            `;
-
-            setTimeout(() => {
-                const anchor = document.getElementById('chat-end-anchor-gov');
-                if (anchor) anchor.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-
-        // تحديث حالة الشكوى من قبل المشرف الحكومي
-        function updateComplaintStatus(complaintId, newStatus) {
-            complaints = complaints.map(c => {
-                if (c.id === complaintId) {
-                    return { ...c, status: newStatus };
-                }
-                return c;
-            });
-            renderGovDashboard();
-        }
-
-        // إرسال رسالة في الشات (مواطن أو مسؤول)
-        function sendChatInput(e, senderType) {
-            e.preventDefault();
-            const inputId = senderType === 'citizen' ? 'chat-text-input' : 'chat-text-input-gov';
-            const inputEl = document.getElementById(inputId);
-            if (!inputEl || !inputEl.value.trim()) return;
-
-            const text = inputEl.value.trim();
-            const timeStr = new Date().toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit' });
-
-            complaints = complaints.map(comp => {
-                if (comp.id === selectedComplaintId) {
-                    return {
-                        ...comp,
-                        messages: [
-                          ...comp.messages,
-                          {
-                              id: comp.messages.length + 1,
-                              sender: senderType,
-                              text: text,
-                              time: timeStr
-                          }
-                        ]
-                    };
-                }
-                return comp;
-            });
-
-            inputEl.value = '';
-
-            // إعادة بناء الشباك لعرض الرسالة المضافة فوراً
-            if (senderType === 'citizen') {
-                renderCitizenChatWindow();
-                // محاكاة استجابة ذكية وتفاعلية بعد 3 ثواني
-                setTimeout(() => {
-                    simulateGovResponse();
-                }, 3000);
-            } else {
-                renderGovChatWindow();
-            }
-        }
-
-        // محاكاة استجابة من الموظف الحكومي لتأكيد الاستلام
-        function simulateGovResponse() {
-            const timeStr = new Date().toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit' });
-            complaints = complaints.map(comp => {
-                if (comp.id === selectedComplaintId) {
-                    // للتأكد من عدم توليد رسالة متكررة لنفس البلاغ إذا انتقل المستخدم
-                    return {
-                        ...comp,
-                        messages: [
-                            ...comp.messages,
-                            {
-                                id: comp.messages.length + 1,
-                                sender: 'gov',
-                                text: `نؤكد لك استلامنا للتفاصيل الإضافية للبلاغ الموثق تحت الرقم ${comp.id}. جاري التدقيق والعمل من قبل فرقنا الميدانية وسنعلمك بالنتيجة هنا فوراً.`,
-                                time: timeStr
-                            }
-                        ]
-                    };
-                }
-                return comp;
-            });
-            
-            if (activeTab === 'citizen-dash') {
-                renderCitizenChatWindow();
-            } else if (activeTab === 'gov-dash') {
-                renderGovChatWindow();
-            }
-        }
-
-        /* -------------------------------------------
-           منطق النوافذ المنبثقة لرفع شكوى وبلاغ جديد
-           ------------------------------------------- */
+        // ---------------- Create New Complaint Modal ----------------
         function openComplaintModal() {
             document.getElementById('complaint-modal').classList.remove('hidden');
+            document.getElementById('complaint-modal').classList.add('flex');
         }
 
         function closeComplaintModal() {
             document.getElementById('complaint-modal').classList.add('hidden');
-            // تفريغ الحقول والمعاينة
+            document.getElementById('complaint-modal').classList.remove('flex');
             document.getElementById('new-complaint-title').value = '';
             document.getElementById('new-complaint-desc').value = '';
             document.getElementById('media-preview-container').classList.add('hidden');
-            document.getElementById('media-preview-container').innerHTML = '';
-            document.getElementById('upload-label-text').innerText = 'رفع صورة / فيديو للبلاغ';
-            mediaPreviewBase64 = '';
+            uploadedImageBase64 = null;
         }
 
-        // معالجة اختيار ملف وسائط ومحاكاة رفعه فوراً مع المعاينة في المتصفح
-        function previewMediaFile(event) {
-            const file = event.target.files[0];
+        function previewMediaFile(e) {
+            const file = e.target.files[0];
             if (file) {
-                const isVideo = file.type.startsWith('video/');
-                mediaPreviewType = isVideo ? 'video' : 'image';
-                document.getElementById('upload-label-text').innerText = `تم اختيار: ${file.name.substring(0, 15)}...`;
-
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    mediaPreviewBase64 = e.target.result;
-                    const previewContainer = document.getElementById('media-preview-container');
-                    previewContainer.classList.remove('hidden');
-
-                    if (mediaPreviewType === 'video') {
-                        previewContainer.innerHTML = `
-                            <video src="${mediaPreviewBase64}" class="max-h-[140px]" controls></video>
-                            <button type="button" onclick="clearMediaPreview()" class="absolute top-1.5 left-1.5 bg-red-600/80 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">✕</button>
-                        `;
-                    } else {
-                        previewContainer.innerHTML = `
-                            <img src="${mediaPreviewBase64}" class="max-h-[140px] object-contain">
-                            <button type="button" onclick="clearMediaPreview()" class="absolute top-1.5 left-1.5 bg-red-600/80 hover:bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px]">✕</button>
-                        `;
-                    }
-                };
+                reader.onload = function(evt) {
+                    uploadedImageBase64 = evt.target.result;
+                    document.getElementById('media-preview-img').src = uploadedImageBase64;
+                    document.getElementById('media-preview-container').classList.remove('hidden');
+                    document.getElementById('upload-label-text').innerText = "تم إرفاق الصورة ✓";
+                }
                 reader.readAsDataURL(file);
             }
         }
 
-        function clearMediaPreview() {
-            document.getElementById('media-preview-container').classList.add('hidden');
-            document.getElementById('media-preview-container').innerHTML = '';
-            document.getElementById('upload-label-text').innerText = 'رفع صورة / فيديو للبلاغ';
-            document.getElementById('new-complaint-file').value = '';
-            mediaPreviewBase64 = '';
-        }
-
-        // إرسال وتخزين شكوى جديدة في الذاكرة المفتوحة
         function submitNewComplaint(e) {
             e.preventDefault();
-            
-            const title = document.getElementById('new-complaint-title').value.trim();
+            const title = document.getElementById('new-complaint-title').value;
             const entity = document.getElementById('new-complaint-entity').value;
-            const desc = document.getElementById('new-complaint-desc').value.trim();
+            const desc = document.getElementById('new-complaint-desc').value;
 
-            if (!title || !desc) return;
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
 
-            const dateStr = new Date().toISOString().replace('T', ' ').substring(0, 16);
-            const timeStr = new Date().toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit' });
-            const generatedId = `COMP-${Math.floor(1000 + Math.random() * 9000)}`;
-
-            const newComplaint = {
-                id: generatedId,
+            const newComp = {
+                id: `COMP-${1000 + complaints.length + 1}`,
                 title: title,
                 description: desc,
                 entity: entity,
                 status: "pending",
                 date: dateStr,
-                citizenName: user ? user.name : "مجد حمود",
-                media: mediaPreviewBase64 || "https://images.unsplash.com/photo-1590086782957-93c06ef21604?auto=format&fit=crop&w=800&q=80",
-                mediaType: mediaPreviewType,
-                messages: [
-                    { id: 1, sender: "citizen", text: "تم رفع وثيقة البلاغ بنجاح وتوجيهها للجهة المعنية للمراجعة.", time: timeStr }
-                ]
+                citizenId: user.id,
+                citizenName: user.name,
+                media: uploadedImageBase64,
+                messages: []
             };
 
-            // إدراجها في بداية المصفوفة
-            complaints.unshift(newComplaint);
-            selectedComplaintId = generatedId;
-
+            complaints.unshift(newComp);
+            selectedComplaintId = newComp.id;
+            
+            showToast('تم إرسال البلاغ للجهات المختصة بنجاح.', 'success');
             closeComplaintModal();
             renderCitizenDashboard();
         }
+
+        // ---------------- Helpers ----------------
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'pending': return `<span class="bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2 py-0.5 rounded text-[9px] font-bold">بانتظار المراجعة</span>`;
+                case 'reviewing': return `<span class="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[9px] font-bold">قيد المعالجة</span>`;
+                case 'solved': return `<span class="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[9px] font-bold">محلول</span>`;
+                default: return '';
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = "bg-gray-800 text-white";
+            if (type === 'success') bgClass = "bg-emerald-600 text-white";
+            else if (type === 'error') bgClass = "bg-red-600 text-white";
+
+            toast.className = `px-4 py-2 rounded-xl shadow-lg text-xs font-bold ${bgClass} transform transition-all duration-300 translate-y-10 opacity-0 flex items-center justify-center`;
+            toast.innerText = message;
+            
+            container.appendChild(toast);
+            
+            // Animate In
+            setTimeout(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            }, 10);
+
+            // Animate Out & Remove
+            setTimeout(() => {
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
     </script>
 </body>
 </html>
