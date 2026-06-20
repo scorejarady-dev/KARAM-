@@ -1,0 +1,12 @@
+{
+  "name": "shofet-einak",
+  "version": "1.0.0",
+  "description": "المنصة الوطنية للشكاوى",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0"
+  }
+}
